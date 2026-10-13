@@ -27,7 +27,17 @@ def f_stat(data):
     return (between/(len(groups)-1))/(within/(n-len(groups)))
 
 observed = f_stat(df)
-rng = np.random.default_rng(7273)
+# Reproduce the initial audit using a deterministic 32-bit LCG.
+seed = 7273
+def random01():
+    global seed
+    seed = (1664525 * seed + 1013904223) % (2**32)
+    return seed / (2**32)
+def shuffle_in_place(v):
+    for j in range(len(v)-1, 0, -1):
+        k = int(random01() * (j+1))
+        v[j], v[k] = v[k], v[j]
+
 n_perm = 5000
 # Permute VALUES within each year, leaving the calendar-month labels and missingness fixed.
 by_year = [np.flatnonzero(df["year"].to_numpy()==yr) for yr in sorted(df["year"].unique())]
@@ -49,7 +59,9 @@ at_least_as_large = 0
 for _ in range(n_perm):
     new = returns.copy()
     for ix in by_year:
-        new[ix] = rng.permutation(new[ix])
+        vals = new[ix].copy()
+        shuffle_in_place(vals)
+        new[ix] = vals
     if fast_f(new) >= observed:
         at_least_as_large += 1
 p = (at_least_as_large + 1)/(n_perm + 1)
