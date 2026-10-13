@@ -11,6 +11,10 @@ df = pd.read_csv(HERE / "data" / "nifty50_monthly_2000_2026_partial.csv",
                  parse_dates=["month"], dtype={"year_complete": bool})
 df = df.sort_values("month")
 assert df["month"].is_unique, "Duplicate months"
+# Defensive check: never mistake a return across a missing calendar month for 1 month.
+previous = df["month"].shift(1)
+months_apart = (df["month"].dt.year * 12 + df["month"].dt.month) - (previous.dt.year * 12 + previous.dt.month)
+assert df.loc[months_apart.ne(1), "return_pct"].isna().all(), "Gap-spanning return detected"
 study = df[(df["month"] < pd.Timestamp("2026-01-01")) & df["return_pct"].notna()].copy()
 study["calendar_month"] = study["month"].dt.month
 
