@@ -22,3 +22,7 @@ Our objective is to document **what the history actually says**. Do not optimise
 - `research_notes.md`: interpretations and limitations.
 - `hypotheses.md`: prior research ideas, explicitly not validated.
 - `analyse.py`: reproducible analysis.
+
+## Statistical tests
+
+Run `python 02_nifty_seasonality/seasonality_tests.py` to reproduce a neutral omnibus calendar-month test (5,000 within-year permutations) and prespecified two-block descriptive comparison. See [omnibus findings](results/omnibus_report.md). Do not interpret month-by-month differences as confirmed effects without independent validation.
