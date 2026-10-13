@@ -48,17 +48,6 @@ These figures are *descriptive* rather than proof of exploitable alpha. They inc
 
 The workflow implements descriptive seasonal averages, frequency, distribution robustness, subperiod instability and conditional seasonal hypotheses. It separates a calendar *candidate effect* from an independently validated tradable rule.
 
-## Next experiment
+## Next experiment — neutral omnibus study
 
-Complete a **pre-registered** conditional study:
-- H1: November return differs conditional on September return and October intramonth breach of September low.
-- Define October breach: **October daily LOW < minimum September daily LOW**.
-- Candidate strata: October positive/negative close, September positive/negative, subsequent November outcome.
-- Alternative outcome: November return relative to unconditional November average.
-- Compare frequencies/means/medians with sample counts and bootstrap uncertainty.
-- Ensure October signal is observed no later than October's final close; November performance is the forward target.
-- Check if any apparent result survives the two subsamples and a holdout period.
-
-## Data gaps and audit
-
-Missing calendar months: 2000-08, 2001-01, 2001-09 through 2001-12. Returns for months immediately after gaps are deliberately **NULL**, not misleading multimonth changes. This excludes 2000-09, 2001-02 and 2002-01 from monthly-return rankings (as well as first-observation January 2000). Two overlapping daily source rows differ by over INR 0.01; investigate before calling the data official-quality. See data provenance.
+Audit the daily source against NSE; then compare all twelve calendar months using identical descriptive and inferential procedures. Compare against an unconditional return benchmark, examine uncertainty and multiple testing, and predefine sample splits. Do not favour months or conditional month sequences based on earlier exploratory discussions. Any secondary hypothesis arises from documented results and is labelled exploratory until validated out of sample.
