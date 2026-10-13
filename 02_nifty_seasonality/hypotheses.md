@@ -1,44 +1,57 @@
-# Research hypotheses — neutral pre-registration template
+# NIFTY seasonality — neutral research protocol
 
-**Status: exploratory baseline.** No calendar month, sign, transition or trading outcome is privileged in advance.
+**Principle:** no month, direction, or previously discussed relationship is privileged. The analysis starts with all 12 months on equal terms and reports null, positive and negative results.
 
-## Primary questions
+## Stage 1 — Exploratory, descriptive (completed on secondary data)
 
-1. Are average NIFTY 50 monthly returns distinguishable across the twelve calendar months, after accounting for uncertainty and multiple comparisons?
-2. Are month-specific positive-return frequencies distinguishable from the unconditional frequency?
-3. How stable are month-level return distributions across non-overlapping historical periods?
-4. Do calendar effects survive comparison against broad-market drift, return volatility and economic regimes defined using information available at the time?
-5. Do apparent effects generalise to genuinely held-out observations?
+Calculate the same statistics for all 12 months:
+- observation count and data completeness;
+- mean and median close-to-close price-index return;
+- positive, negative and zero-return frequencies;
+- standard deviation, worst/best outcome, and quantiles;
+- entire year-by-month return matrix;
+- subperiod summaries and uncertainty.
 
-## Exploratory (not pre-registered)
+Do **not** call a month an 'edge' merely because its mean or hit rate is high. Report all months, including weak or inconclusive patterns.
 
-- All twelve monthly means, medians, positive frequencies, standard deviations and tails.
-- Month-to-month return transitions examined **symmetrically across all months**, not a previously selected pair.
-- Ex-ante trend and volatility regime splits applied with a consistent rule to all months.
-- Rolling-window seasonal estimates and change-point sensitivity.
+## Stage 2 — Data quality (required before confirmatory tests)
 
-## Rules to prevent confirmation bias
+- Reconcile missing months and two source disagreements with official NSE NIFTY 50 daily data.
+- Confirm holiday/calendar completeness, return convention and price-index (not total-return) basis.
+- Exclude partially observed months from full-month comparisons.
+- Keep a provenance log for any edits. Never quietly fill missing prices.
 
-- Never privilege individual months or patterns based on prior discretionary observations.
-- Distinguish exploratory discoveries from confirmatory tests.
-- Apply corrections for the twelve month-level comparisons and any additional tested variants.
-- Preserve losing years and outliers; report sensitivity instead of deleting them.
-- Freeze training/validation/test periods before inspecting model performance.
-- Never use year-end classifications or revisions that were unknowable on the decision date.
-- Report all tests conducted, including null and negative findings.
-- Assess effect size, uncertainty, stability and practical tradability separately.
-- Do not optimise a calendar trade while constructing the descriptive baseline.
+## Stage 3 — Predefined omnibus hypotheses
 
-## Protocol metadata (to fill before confirmatory work)
+Primary null:
+`H0: mean calendar-month returns do not differ, apart from sampling error`.
+Alternative:
+`H1: at least one calendar month differs`.
 
-- Data source and version:
-- Official source verification:
-- Sample and missing-month rules:
-- Hypothesis family / multiplicity correction:
-- Training period:
-- Validation period:
-- Untouched test period:
-- Statistic and confidence interval:
-- Bootstrap design (if relevant):
-- Costs and execution assumption (only for later trading tests):
-- Decision:
+Additional **separate** questions:
+- Do calendar-month return distributions differ in downside tail risk or volatility?
+- Are any observed calendar effects stable across pre-specified time blocks?
+- Does a calendar model predict future returns better than an unconditional benchmark out of sample?
+
+Use confidence intervals and, where appropriate, resampling that respects time dependence. Consider tests of all twelve months together before post-hoc month comparisons.
+
+## Stage 4 — Explanations and conditional tests
+
+After the broad analysis, register economically motivated explanations or conditional relationships prospectively. Record:
+- ex-ante hypothesis and specific outcome;
+- indicator definitions and **information availability time**;
+- evaluation window and comparison/control group;
+- minimum sample requirements;
+- multiple-testing corrections or explicit exploratory status;
+- out-of-sample/holdout performance and limitations.
+
+Prior informal investigations of particular month combinations are not included as pre-registered hypotheses, and must not guide model selection.
+
+## Stage 5 — Trading relevance (later)
+
+Only after robust statistical evidence: translate a narrowly defined signal into an executable strategy and include futures/ETF/option-specific financing, dividends, fees, slippage, liquidity and risk sizing.
+
+## Decision log
+
+- **2026-10-13:** Standardise the research framework to month-neutral, symmetric hypothesis testing. No preferred seasonal months or previously explored conditional relationships.
+- **Current stage:** descriptive baseline / data audit, not validated trading signal.
