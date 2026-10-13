@@ -4,20 +4,20 @@
 
 ## Baseline seasonal matrix
 
-Computed from `data/nifty50_monthly_2000_2026_partial.csv`, ranking through December 2025 (January 2000 has no prior-month price).
+Computed from `data/nifty50_monthly_2000_2026_partial.csv`, ranking through December 2025 (Months following absent observations have no valid prior-month baseline; January 2000 likewise).
 `n` is the observed number of monthly returns. Values in percentage points.
 
 | Month | n | Mean | Median | Positive | Frequency | Std |
 |---|---:|---:|---:|---:|---:|---:|
-| Jan | 24 | -0.83% | -0.84% | 8 | 33.3% | 5.81% |
-| Feb | 26 | -0.12% | 0.94% | 14 | 53.8% | 4.61% |
+| Jan | 23 | -0.95% | -1.10% | 7 | 30.4% | 5.91% |
+| Feb | 25 | -0.40% | 0.82% | 13 | 52.0% | 4.47% |
 | Mar | 26 | 0.03% | 0.72% | 14 | 53.8% | 8.14% |
 | Apr | 26 | 1.56% | 1.16% | 15 | 57.7% | 5.59% |
 | May | 26 | 0.91% | 1.21% | 14 | 53.8% | 8.31% |
 | Jun | 26 | 1.48% | 1.57% | 17 | 65.4% | 5.55% |
 | Jul | 26 | 1.75% | 2.45% | 18 | 69.2% | 5.14% |
 | Aug | 25 | 1.07% | 0.62% | 15 | 60.0% | 4.82% |
-| Sep | 25 | 1.98% | 2.00% | 15 | 60.0% | 5.72% |
+| Sep | 24 | 2.27% | 2.14% | 15 | 62.5% | 5.65% |
 | Oct | 25 | 0.54% | 1.47% | 15 | 60.0% | 8.33% |
 | Nov | 25 | 2.44% | 3.20% | 15 | 60.0% | 5.60% |
 | Dec | 25 | 2.63% | 2.07% | 17 | 68.0% | 4.66% |
@@ -58,3 +58,7 @@ Complete a **pre-registered** conditional study:
 - Compare frequencies/means/medians with sample counts and bootstrap uncertainty.
 - Ensure October signal is observed no later than October's final close; November performance is the forward target.
 - Check if any apparent result survives the two subsamples and a holdout period.
+
+## Data gaps and audit
+
+Missing calendar months: 2000-08, 2001-01, 2001-09 through 2001-12. Returns for months immediately after gaps are deliberately **NULL**, not misleading multimonth changes. This excludes 2000-09, 2001-02 and 2002-01 from monthly-return rankings (as well as first-observation January 2000). Two overlapping daily source rows differ by over INR 0.01; investigate before calling the data official-quality. See data provenance.
