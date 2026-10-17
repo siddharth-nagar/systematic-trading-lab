@@ -32,9 +32,15 @@ systematic-trading-lab/
 ├── README.md
 ├── requirements.txt
 ├── 01_kaufman/
-│   └── chapter_09_momentum_oscillators/
+│   ├── chapter_09_momentum_oscillators/
+│   │   ├── notes.md
+│   │   └── ch09_lab.ipynb
+│   ├── chapter_10_seasonality/
+│   │   └── notes.md          # replication lives in 02_nifty_seasonality/
+│   └── chapter_11_cycles/
 │       ├── notes.md
-│       └── ch09_lab.ipynb
+│       └── ch11_lab.ipynb
+├── 02_nifty_seasonality/     # Research 001 — provisional NIFTY baseline
 ├── 05_research/
 │   └── experiment_log.md
 └── 06_strategy_ideas/
@@ -53,3 +59,16 @@ The Chapter 9 notebook is intentionally a **learning notebook, not a strategy op
 - basic sanity checks and failure-mode notes.
 
 Synthetic data are used so the focus stays on understanding the mechanics rather than data sourcing.
+
+## Chapter 11 implementation scope
+
+The Chapter 11 notebook is a **learning notebook, not a strategy optimiser**. It plants known 20-day and 8-day cycles in synthetic data and checks whether each method recovers them:
+
+- detrending (full-sample linear, EMA difference, triangular MA);
+- trigonometric regression period search (one and two frequencies);
+- FFT periodogram;
+- spectral leakage and the Hann taper;
+- a permutation test for whether the largest peak beats noise;
+- basic sanity checks and failure-mode notes.
+
+Status: Parts 1–3 covered; Part 4 (phasing and trading rules) next.
