@@ -27,15 +27,18 @@ def metrics(s):
     })
 monthly = study.groupby("calendar_month")["return_pct"].apply(metrics).unstack()
 monthly.index.name = "month"
-monthly.to_csv(HERE / "results" / "monthly_seasonality.csv")
+monthly[["n", "positive_count"]] = monthly[["n", "positive_count"]].astype(int)
+# Fixed precision keeps re-runs byte-identical across platforms.
+monthly.to_csv(HERE / "results" / "monthly_seasonality.csv", float_format="%.6f")
 
 study["year"] = study["month"].dt.year
 study["sample"] = study["year"].map(lambda x: "2000-2012" if x<=2012 else "2013-2025")
 sub = study.groupby(["sample", "calendar_month"])["return_pct"].apply(metrics).unstack()
-sub.to_csv(HERE / "results" / "subperiods.csv")
+sub[["n", "positive_count"]] = sub[["n", "positive_count"]].astype(int)
+sub.to_csv(HERE / "results" / "subperiods.csv", float_format="%.6f")
 
 annual = study.pivot(index="year", columns="calendar_month", values="return_pct")
-annual.to_csv(HERE / "results" / "year_month_matrix.csv")
+annual.to_csv(HERE / "results" / "year_month_matrix.csv", float_format="%.6f")
 
 fig, ax = plt.subplots(figsize=(11,5))
 ax.bar(monthly.index.astype(str), monthly["mean_pct"])

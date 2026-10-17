@@ -32,11 +32,11 @@ We must resolve gaps and mismatched prices against NSE Indices official data bef
 
 ## Subperiod stability
 
-The research script saves all 12 monthly means in two fixed calendar intervals:
+`analyse.py` saves the same descriptive statistics for all 12 months in two fixed calendar intervals:
 - 2000–2012
 - 2013–2025
 
-Notable differences should be reported without preferentially selecting a month. The complete table is in `results/subperiod_means.csv`.
+Notable differences should be reported without preferentially selecting a month. The complete table is in [`subperiods.csv`](subperiods.csv).
 
 ## Next audit steps
 

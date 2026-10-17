@@ -74,11 +74,9 @@ summary = pd.DataFrame([{
     "random_seed": 7273,
     "permutation_p": p
 }])
-summary.to_csv(HERE/"results"/"omnibus_test.csv", index=False)
+summary.to_csv(HERE/"results"/"omnibus_test.csv", index=False, float_format="%.6f")
 
-df["period"] = np.where(df["year"]<=2012,"2000-2012","2013-2025")
-subperiod = df.groupby(["period","calendar_month"])["return_pct"].agg(["count","mean","median","std"]).reset_index()
-subperiod.to_csv(HERE/"results"/"subperiod_means.csv", index=False)
+# Subperiod (2000-2012 vs 2013-2025) tables are produced by analyse.py -> results/subperiods.csv.
 
 print(summary.to_string(index=False))
 print("Exploratory only; not official-source validated or a trading signal.")

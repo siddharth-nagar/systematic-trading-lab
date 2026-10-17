@@ -19,9 +19,14 @@ Our objective is to document **what the history actually says**. Do not optimise
 ## Files
 - `data/nifty50_monthly_2000_2026_partial.csv`: dated price-index monthly OHLC and close-to-close return.
 - `results/monthly_seasonality.csv`: descriptive summary through 2025.
+- `results/subperiods.csv`: the same statistics for 2000–2012 and 2013–2025.
+- `results/year_month_matrix.csv`: year × calendar-month return matrix.
+- `results/mean_monthly_returns.png`, `results/positive_frequency.png`: charts.
+- `results/omnibus_test.csv`, `results/omnibus_report.md`: omnibus month-effect test and write-up.
 - `research_notes.md`: interpretations and limitations.
 - `hypotheses.md`: prior research ideas, explicitly not validated.
-- `analyse.py`: reproducible analysis.
+- `analyse.py`: reproducible descriptive analysis.
+- `seasonality_tests.py`: omnibus permutation test.
 
 ## Statistical tests
 

@@ -31,7 +31,7 @@ These figures are *descriptive* rather than proof of exploitable alpha. They inc
 - Median: middle sorted value (or average of two middle observations)
 - Positive frequency: `100 * count(r>0)/n` (zero counts as non-positive)
 - Sample standard deviation: `sqrt(sum((r-mean)**2)/(n-1))`
-- Yearly price-index OHLC: month close = final available daily close; month high/low = extreme of daily high/low.
+- Monthly price-index OHLC: month close = final available daily close; month high/low = extreme of daily high/low.
 
 ## Scientific caveats
 
@@ -39,10 +39,11 @@ These figures are *descriptive* rather than proof of exploitable alpha. They inc
 2. A positive monthly mean across 12 sampled months is not independent evidence of seasonality because equities tend to drift upward.
 3. Examine tail outcomes, medians, and uncertainty, not just positive frequency.
 4. Subperiod stability: 2000–2012 versus 2013–2025 (with incomplete January 2000 handled).
-5. For conditional September–October–November tests, define the event and null hypothesis **before** testing and avoid future-leaking conditions.
-6. Carry out daily chronological event reconstruction before concluding whether October broke September's low before recovering.
-7. Validate primary-source daily series and missing trading dates before high-stakes use.
-8. This is about index-price behaviour; a derivatives strategy has execution costs, carry and options greeks not captured here.
+5. Any conditional or multi-month hypothesis must be registered **before** testing (see Stage 4 in `hypotheses.md`), avoid future-leaking conditions, and must not be motivated by earlier informal exploration of particular months.
+6. Monthly highs/lows cannot show the order of intramonth events; any event study that depends on ordering needs the daily dataset.
+7. The missing months (2000-08, 2001-01, 2001-09 to 2001-12) are not random: 2001-09 covers the post-9/11 sell-off. Gaps during a crisis can bias the affected calendar months, so treat Sep–Dec statistics with extra caution until the gaps are filled from official data.
+8. Validate primary-source daily series and missing trading dates before high-stakes use.
+9. This is about index-price behaviour; a derivatives strategy has execution costs, carry and options greeks not captured here.
 
 ## Learning connection to Kaufman Chapter 10
 

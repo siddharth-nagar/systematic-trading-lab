@@ -32,14 +32,28 @@ systematic-trading-lab/
 ├── README.md
 ├── requirements.txt
 ├── 01_kaufman/
-│   └── chapter_09_momentum_oscillators/
+│   ├── chapter_09_momentum_oscillators/
+│   │   ├── notes.md
+│   │   └── ch09_lab.ipynb
+│   └── chapter_10_seasonality/
 │       ├── notes.md
-│       └── ch09_lab.ipynb
+│       ├── seasonal_index.py
+│       └── results/
+├── 02_nifty_seasonality/        # Research 001: applied Chapter 10 study (see its README)
 ├── 05_research/
 │   └── experiment_log.md
 └── 06_strategy_ideas/
     └── parking_lot.md
 ```
+
+## Progress
+
+| Chapter | Status | Where |
+|---|---|---|
+| 9 — Momentum and oscillators | Complete | `01_kaufman/chapter_09_momentum_oscillators/` |
+| 10 — Seasonality | Complete | `01_kaufman/chapter_10_seasonality/`, applied in `02_nifty_seasonality/` |
+| 11 — Cycle analysis | Next | — |
+| 12 — Volume, open interest and breadth | Planned | — |
 
 ## Chapter 9 implementation scope
 

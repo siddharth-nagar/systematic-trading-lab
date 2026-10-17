@@ -22,4 +22,6 @@
 
 Missing months between January 2000 and December 2025: **2000-08, 2001-01, 2001-09, 2001-10, 2001-11, 2001-12**. Returns that would incorrectly span missing months are left blank (2000-09, 2001-02, 2002-01); initial January 2000 is also blank. Missing-month months themselves are absent and must not be treated as zero returns. This first release has no claim of complete 2000–2025 monthly coverage.
 
+**Missingness is probably not random.** The 2001-09 to 2001-12 gap coincides with the post-9/11 market sell-off. Data missing during a stress period can bias the statistics of the affected calendar months (here Sep–Dec, plus Jan/Feb through blanked returns), so the gaps must be filled from official NSE data before any month-level conclusion is treated as reliable.
+
 Daily overlap mismatch count: 2; largest absolute close-price difference 20.60 index points. Source precedence resolves these but the discrepancy needs independent official verification. Do not interpret the series as error-free.
