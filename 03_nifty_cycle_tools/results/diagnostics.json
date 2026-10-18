@@ -1,0 +1,107 @@
+{
+  "MESA": {
+    "share_at_longest_period_50": 0.268,
+    "share_at_or_above_45": 0.305,
+    "median_dominant_period": 33.0,
+    "median_abs_daily_change_in_period": 1.0,
+    "share_days_period_jumps_gt5": 0.083,
+    "forecast_hit_rate_vs_detrended_next5": 0.666,
+    "forecast_hit_rate_vs_price_next5": 0.49,
+    "forecast_hit_rate_vs_price_next5_strong_cycle_only": 0.492,
+    "base_rate_price_up_next5": 0.565,
+    "forecast_signed_return_tstat_nonoverlap": 0.13,
+    "n_nonoverlap": 1160
+  },
+  "Phase angle": {
+    "share_time_cycle_mode": 0.384,
+    "share_bars_phase_moves_backwards_or_stalls": 0.181,
+    "median_implied_period_in_cycle_mode": 14.3,
+    "median_cycle_mode_episode_days": 6.0
+  },
+  "Lateral shift (forward 20-day efficiency ratio; lower = choppier)": {
+    "Hilbert phase regular (cycle mode)": {
+      "share_of_time": 0.385,
+      "fwd_ER_when_cycle": 0.277,
+      "fwd_ER_otherwise": 0.251,
+      "difference": 0.025,
+      "t_nonoverlap": 0.49
+    },
+    "MESA strong cycle": {
+      "share_of_time": 0.485,
+      "fwd_ER_when_cycle": 0.254,
+      "fwd_ER_otherwise": 0.268,
+      "difference": -0.015,
+      "t_nonoverlap": -0.3
+    },
+    "Baseline: past ER20 below its median": {
+      "share_of_time": 0.525,
+      "fwd_ER_when_cycle": 0.279,
+      "fwd_ER_otherwise": 0.241,
+      "difference": 0.038,
+      "t_nonoverlap": 3.01
+    }
+  },
+  "Hilbert": {
+    "n_buy_signals": 276,
+    "n_sell_signals": 273,
+    "fwd10_after_buy_%": 0.55,
+    "fwd10_after_sell_%": 0.6,
+    "fwd10_unconditional_%": 0.56,
+    "t_buy_minus_uncond": -0.01,
+    "t_sell_minus_uncond": 0.18
+  },
+  "Fisher": {
+    "share_|fisher|>1.5": 0.234,
+    "n_after_extreme_buys": 304,
+    "n_after_extreme_sells": 539,
+    "fwd5_after_extreme_buy_%": 0.38,
+    "fwd5_after_extreme_sell_%": 0.19,
+    "fwd5_after_plain_up_cross_%": 0.29,
+    "fwd5_unconditional_%": 0.24,
+    "t_extreme_buy_minus_uncond": 0.73,
+    "t_extreme_sell_minus_uncond": -0.45
+  },
+  "Fisher distribution": {
+    "channel_position_bins": [
+      1119,
+      307,
+      313,
+      249,
+      243,
+      312,
+      321,
+      348,
+      462,
+      2129
+    ],
+    "fisher_bins": [
+      104,
+      207,
+      463,
+      679,
+      792,
+      811,
+      885,
+      814,
+      546,
+      502
+    ]
+  },
+  "Inverse Fisher": {
+    "share_|ift|>80": 0.002,
+    "share_|ift|<20": 0.44,
+    "median_days_between_sign_flips": 22.0
+  },
+  "Systems by regime (base costs)": {
+    "SMA50 trend": {
+      "ann_return_%_in_cycle_mode": 6.2,
+      "ann_return_%_otherwise": 18.9,
+      "t_difference": -1.46
+    },
+    "Hilbert cycle": {
+      "ann_return_%_in_cycle_mode": -11.7,
+      "ann_return_%_otherwise": -1.0,
+      "t_difference": -1.22
+    }
+  }
+}

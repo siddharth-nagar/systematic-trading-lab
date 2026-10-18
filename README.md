@@ -41,6 +41,7 @@ systematic-trading-lab/
 │       ├── notes.md
 │       └── ch11_lab.ipynb
 ├── 02_nifty_seasonality/     # Research 001 — provisional NIFTY baseline
+├── 03_nifty_cycle_tools/     # Research 002 — Ch.11 cycle tools on NIFTY, no look-ahead
 ├── 05_research/
 │   └── experiment_log.md
 └── 06_strategy_ideas/
