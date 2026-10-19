@@ -77,3 +77,5 @@ Red-noise spectrum (dominant period at search edge), cycle episodes of ~6 days, 
 
 ### Next action
 Continue Kaufman Ch.11 Part 5 (CCI, Short Cycle Indicator, Hurst phasing) — test phasing for the same look-ahead trap.
+
+**Update 2026-10-19 (Part 5):** CCI (Lambert and fade readings, N = 20 and 8) gave no edge; CCI(20) inside ±100 only 54% of the time. Hurst phasing with a trailing MA20 = trend filter (long-only Sharpe 0.92); the centred-MA version shows Sharpe 2.88 — look-ahead. Chapter 11 complete; move to Chapter 12.

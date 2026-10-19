@@ -47,6 +47,23 @@ Full table with stress costs, volatility, t-stats, exposure and turnover: [`resu
 6. **Inverse Fisher RSI.** Not bipolar on NIFTY daily data with Kaufman's parameters (|value| > 80 only 0.2% of the time). As a long/flat filter it reduced drawdown (−27% vs −59%) but did not beat a plain 50-day moving-average filter. It is a smoothed momentum indicator, not a cycle tool.
 7. **Look-ahead trap.** The identical Hilbert rule on a zero-phase FFT band-pass of the full sample shows 91.6% CAGR and Sharpe 3.25. That filter uses future prices. This is why centred moving averages and full-sample spectral filters must never be used in a backtest.
 
+## Part 5 — CCI and Hurst phasing (`run_part5.py`)
+
+| Strategy | Sharpe 2002–2026 | 2002–2013 | 2014–2026 | CAGR % | Turnover/yr |
+|---|---:|---:|---:|---:|---:|
+| CCI(20) Lambert, with the turn, L/S | 0.03 | 0.21 | −0.22 | −0.7 | 52.5 |
+| CCI(20) Lambert, long-only | 0.39 | 0.60 | 0.12 | 2.9 | 31.7 |
+| CCI(20) fade extremes, L/S | −0.25 | −0.40 | −0.05 | −4.7 | 52.5 |
+| CCI(8) Lambert, long-only | 0.55 | 0.63 | 0.45 | 4.1 | 49.1 |
+| Hurst half-span turns, trailing MA20 (honest) L/S | 0.44 | 0.72 | 0.07 | 7.4 | 44.6 |
+| Hurst half-span turns, trailing MA20 (honest) long-only | 0.92 | 1.15 | 0.64 | 12.4 | 22.3 |
+| **LOOK-AHEAD** Hurst, centred MA20 L/S | 2.88 | 3.26 | 2.53 | 78.4 | 44.3 |
+
+- CCI(20) sits inside ±100 only **54%** of the time on NIFTY (Kaufman: 70–80%) — trending data pushes it outside more often.
+- Next-5-day return after CCI(20) crosses above +100: 0.23%; below −100: 0.22%; any day: 0.24%. No information either way.
+- Hurst: the honest (trailing) half-span turn arrives a median **7 days** after the centred turn. The honest version is a 20-day MA slope trend filter; its long-only result is reasonable but below a 50-day MA filter (1.09).
+- Short Cycle Indicator not tested: designed for intraday bars, many constants, undefined term in its second form.
+
 ## Interpretation and limits
 
 - No cycle tool showed a tradable edge on daily NIFTY after costs with next-open execution.
@@ -59,5 +76,5 @@ Full table with stress costs, volatility, t-stats, exposure and turnover: [`resu
 
 ```bash
 pip install -r requirements.txt
-cd 03_nifty_cycle_tools && python run_tests.py
+cd 03_nifty_cycle_tools && python run_tests.py && python run_part5.py
 ```

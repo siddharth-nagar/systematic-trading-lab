@@ -72,4 +72,4 @@ The Chapter 11 notebook is a **learning notebook, not a strategy optimiser**. It
 - a permutation test for whether the largest peak beats noise;
 - basic sanity checks and failure-mode notes.
 
-Status: Parts 1–3 covered; Part 4 (phasing and trading rules) next.
+Status: chapter complete. NIFTY replication of Parts 4–5 in `03_nifty_cycle_tools/`.
