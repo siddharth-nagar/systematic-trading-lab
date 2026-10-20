@@ -43,6 +43,44 @@ One action only.
 ---
 
 ### Experiment ID
+`2026-10-13-nifty-monthly-seasonality` (Research 001, recorded retrospectively)
+
+### Question
+Do NIFTY 50 calendar-month mean returns differ (Kaufman Ch.10)?
+
+### Hypothesis
+H0: all 12 calendar-month means are equal. H1: at least one differs.
+
+### Indicator / rule
+Monthly close-to-close returns; one-way F ratio; within-year permutation test (5,000 replicates, seed 7273).
+
+### Data
+NIFTY 50 price index, monthly, 2000–2025 (302 returns), secondary sources; six missing months in 2000–2001.
+
+### Parameters
+None optimised. Subperiods fixed: 2000–2012 and 2013–2025.
+
+### Costs
+Not applicable — descriptive/inferential, not a backtest.
+
+### Result
+F = 0.829, permutation p = 0.575. Do not reject equal means. See `02_nifty_seasonality/results/omnibus_report.md`.
+
+### Failure modes
+Low power with ~25 observations per month; unverified secondary data; regime changes over time.
+
+### Decision
+- [ ] Keep for later research
+- [ ] Reject
+- [x] Needs more evidence
+- [ ] Educational only
+
+### Next action
+Reconcile missing months and conflicting closes against official NSE Indices data.
+
+---
+
+### Experiment ID
 `2026-10-18-ch11-cycle-tools-nifty`
 
 ### Question

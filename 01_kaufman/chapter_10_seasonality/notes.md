@@ -4,6 +4,8 @@
 
 **Chapter covered (Level 2 — Replicate).**
 
+> **Verification:** these notes were rebuilt from the study sessions, not yet checked line by line against the printed Chapter 10 text (Chapter 11 has been). Check formulas and page references when the Chapter 10 PDF is available.
+
 The replication for this chapter lives in [`02_nifty_seasonality/`](../../02_nifty_seasonality/) as a provisional research baseline. Deep validation (Level 3) is deliberately deferred until the book is finished.
 
 This note captures the concepts to retain. It is not intended to reproduce every variation in the chapter.

@@ -25,6 +25,21 @@ Use this loop:
    - visualise their behaviour;
    - explain when they should fail.
 
+## Progress
+
+| Chapter | Notes | Lab / replication | Checked against printed text |
+|---|---|---|---|
+| 8 — Trend systems | **missing** | **missing** | — |
+| 9 — Momentum and oscillators | `01_kaufman/chapter_09_momentum_oscillators/` | `ch09_lab.ipynb` (synthetic) | not yet |
+| 10 — Seasonality | `01_kaufman/chapter_10_seasonality/` | Research 001: `02_nifty_seasonality/` | not yet |
+| 11 — Cycle analysis | `01_kaufman/chapter_11_cycles/` | `ch11_lab.ipynb` (synthetic) + Research 002: `03_nifty_cycle_tools/` | yes, pp. 485–526 |
+| 12 — Volume, open interest, breadth | next | — | — |
+
+## Research findings so far
+
+- **Research 001 — NIFTY seasonality:** no evidence that calendar-month means differ (omnibus permutation p ≈ 0.575, 2000–2025, provisional secondary data).
+- **Research 002 — Ch.11 cycle tools on NIFTY:** no cycle tool beat buy & hold with next-open fills and costs; trend filters survived (a plain 50-day MA filter was best); look-ahead versions showed fake Sharpe ratios of 2.9–3.3.
+
 ## Structure
 
 ```text
