@@ -29,15 +29,16 @@ Use this loop:
 
 | Chapter | Notes | Lab / replication | Checked against printed text |
 |---|---|---|---|
-| 8 — Trend systems | **missing** | **missing** | — |
-| 9 — Momentum and oscillators | `01_kaufman/chapter_09_momentum_oscillators/` | `ch09_lab.ipynb` (synthetic) | not yet |
-| 10 — Seasonality | `01_kaufman/chapter_10_seasonality/` | Research 001: `02_nifty_seasonality/` | not yet |
+| 8 — Trend systems | `01_kaufman/chapter_08_trend_systems/` | `ch08_lab.ipynb` (Kaufman's tests on NIFTY) | yes, pp. 309–368 |
+| 9 — Momentum and oscillators | `01_kaufman/chapter_09_momentum_oscillators/` | `ch09_lab.ipynb` (synthetic) | yes, pp. 369–426 |
+| 10 — Seasonality and calendar patterns | `01_kaufman/chapter_10_seasonality/` | Research 001: `02_nifty_seasonality/` | yes, pp. 427–484 |
 | 11 — Cycle analysis | `01_kaufman/chapter_11_cycles/` | `ch11_lab.ipynb` (synthetic) + Research 002: `03_nifty_cycle_tools/` | yes, pp. 485–526 |
 | 12 — Volume, open interest, breadth | next | — | — |
 
 ## Research findings so far
 
 - **Research 001 — NIFTY seasonality:** no evidence that calendar-month means differ (omnibus permutation p ≈ 0.575, 2000–2025, provisional secondary data).
+- **Ch.8 lab — trend systems on NIFTY:** Kaufman's fat tail holds (long runs and a few big trades drive profits); long-only 40-day MA trend filter Sharpe 0.96 vs 0.76 buy & hold with a much smaller drawdown; on NIFTY, price-cross signals and same-day-close entries beat Kaufman's preferred trendline signals and delayed entries.
 - **Research 002 — Ch.11 cycle tools on NIFTY:** no cycle tool beat buy & hold with next-open fills and costs; trend filters survived (a plain 50-day MA filter was best); look-ahead versions showed fake Sharpe ratios of 2.9–3.3.
 
 ## Structure
@@ -47,6 +48,9 @@ systematic-trading-lab/
 ├── README.md
 ├── requirements.txt
 ├── 01_kaufman/
+│   ├── chapter_08_trend_systems/
+│   │   ├── notes.md
+│   │   └── ch08_lab.ipynb
 │   ├── chapter_09_momentum_oscillators/
 │   │   ├── notes.md
 │   │   └── ch09_lab.ipynb

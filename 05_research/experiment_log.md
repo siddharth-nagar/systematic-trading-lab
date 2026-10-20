@@ -117,3 +117,42 @@ Red-noise spectrum (dominant period at search edge), cycle episodes of ~6 days, 
 Continue Kaufman Ch.11 Part 5 (CCI, Short Cycle Indicator, Hurst phasing) — test phasing for the same look-ahead trap.
 
 **Update 2026-10-19 (Part 5):** CCI (Lambert and fade readings, N = 20 and 8) gave no edge; CCI(20) inside ±100 only 54% of the time. Hurst phasing with a trailing MA20 = trend filter (long-only Sharpe 0.92); the centred-MA version shows Sharpe 2.88 — look-ahead. Chapter 11 complete; move to Chapter 12.
+
+---
+
+### Experiment ID
+`2026-10-20-ch08-trend-systems-nifty` (lab: `01_kaufman/chapter_08_trend_systems/ch08_lab.ipynb`)
+
+### Question
+Do Kaufman's Chapter 8 trend-system findings hold on NIFTY daily data?
+
+### Hypothesis
+Fat-tailed runs make simple trend systems profitable; trendline signals beat price crosses; longer periods give better profit factors.
+
+### Indicator / rule
+Kaufman's systems (momentum, MA direction, exponential, N-day breakout, regression slope), price cross, Bollinger 20/2σ, Golden Cross 50/200.
+
+### Data
+NIFTY 50 price index, daily OHLC, 2002-10 to 2026-03 (`03_nifty_cycle_tools/data/`).
+
+### Parameters
+Kaufman's doubling set 5, 10, 20, 40, 80, 160 — whole profile reported, none selected.
+
+### Costs
+0.03% per side; default fill next open; Section 3 compares today's close / next open / next close.
+
+### Result
+Fat tail confirmed (runs ≥ 6 days: 5.1% vs 2.8% random; top 5 of 311 trades = 31% of gross profit). Profit factor rises with period up to 80 days. Price cross beat trendline on Sharpe at every period; same-day-close fills beat delayed fills. No long/short system beat buy & hold (Sharpe 0.76); long-only 40-day MA Sharpe 0.96, max DD −36% vs −59%.
+
+### Failure modes
+Shorting a strongly rising index; few trades at long periods (NDB-160 ≈ 16 trades); profit factor flattered by the long side.
+
+### Decision
+- [ ] Keep for later research
+- [ ] Reject
+- [ ] Needs more evidence
+- [x] Educational only
+
+### Next action
+Chapter 12 (volume, open interest, breadth).
+
