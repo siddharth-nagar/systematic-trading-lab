@@ -193,3 +193,41 @@ Shuffling destroys volatility clustering, so the null is lenient; monthly data c
 
 ### Next action
 Chapter 12 (volume, open interest, breadth).
+
+---
+
+### Experiment ID
+`2026-10-23-ch12-volume-breadth-synthetic` (lab: `labs/ch12_lab.ipynb`)
+
+### Question
+What do Kaufman's volume and breadth indicators measure, before any real data is used?
+
+### Hypothesis
+Educational: OBV inherits most of its shape from price; a lagged average helps detect volume spikes; breadth can fail to confirm a narrow, cap-weighted rally.
+
+### Indicator / rule
+`lib/volume.py`: OBV (Table 12.2 replicated exactly), volume spike with a 5-day-lagged average, low-volume σ filter, A/D line, McClellan, TRIN, Thrust.
+
+### Data
+Synthetic only: one stock with log-normal persistent volume; a 300-stock one-factor market.
+
+### Parameters
+Book values (20-day spike average ×2 lagged 5 days; McClellan 0.10/0.05; Thrust ±30).
+
+### Costs
+Not applicable.
+
+### Result
+With pure-noise volume, the 20-day OBV change still correlates 0.69 with the 20-day price change. Spike rule: lagged average caught 14/15 planted build-ups vs 13/15 unlagged, with 13 vs 10 other days flagged. A 2σ filter removes 2.3% (normal) or ~0% (log-normal) of days, not 32%. Narrow rally: cap-weighted index +12.9% while the A/D line fell.
+
+### Failure modes
+Synthetic data cannot show whether NIFTY volume or breadth carries information; that is Research 003.
+
+### Decision
+- [ ] Keep for later research
+- [ ] Reject
+- [ ] Needs more evidence
+- [x] Educational only
+
+### Next action
+Download NSE data and run Research 003 exactly as pre-registered.

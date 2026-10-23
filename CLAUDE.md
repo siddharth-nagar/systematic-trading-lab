@@ -44,6 +44,11 @@ Learn → Explain → Implement → Visualise → Test lightly → Record → Mo
 - p. 516: the Hilbert Q needs Ehlers' gain correction (0.075·Period + 0.54), which the book omits.
 - p. 519: the Fisher transform's output is unbounded; the ±1 range the book gives applies to its input.
 - p. 521: the CCI mean x̄ is printed as a sum; it is an average.
+- p. 540: the Money Flow Index accumulates flows over all history with no period; the standard version uses n-day sums.
+- p. 542: PVI/NVI variation 2 is not Fosback's index, which compounds the day's % price change.
+- p. 547: the A/D index is printed as ADI(t−1) − A − D; it is ADI(t−1) + (A − D).
+- p. 548: Bolton-Tremblay takes √BT of a negative BT; use √|BT|. The Schultz ratio is said to be 0–100 but has no ×100.
+- p. 563: a one-sided 2σ low-volume filter removes ≈2.3% of days (normal), not 32%.
 
 ## Commits
 
