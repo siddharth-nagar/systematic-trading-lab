@@ -4,7 +4,7 @@ Write ideas here instead of interrupting the current learning objective.
 
 ## Current learning objective
 
-Finish Kaufman sequentially. Chapters 9, 10 and 11 are complete; Chapter 12 (volume, open interest and breadth) is next.
+Finish Kaufman sequentially. Chapters 8, 9, 10 and 11 have been completed, checked against the printed text and replicated at a basic level. Next: Chapter 12 (volume, open interest, breadth).
 
 The NIFTY seasonality study (`research/001-nifty-seasonality/`) is paused at the data-audit stage while reading. Resume it only after Chapter 12.
 
@@ -17,8 +17,9 @@ The NIFTY seasonality study (`research/001-nifty-seasonality/`) is paused at the
 - Intraday momentum
 - Volume confirmation (Chapter 12; needs NIFTY futures volume / OI and NSE advance-decline data)
 - Divergence as a programmable feature
-- Ehlers cycle/trend mode switch (Hilbert phase) as a regime filter: must first beat the Slutsky–Yule null
 - Multi-asset / cross-market momentum
+- Cycle-phase timing inside a trend filter, or an Ehlers cycle/trend mode switch (Chapter 11) — tested on NIFTY daily in Research 002: no edge, switching lowered Sharpe 0.66 → 0.27; revisit only with intraday data
+- NIFTY calendar effects from Kaufman Ch.10 (holiday, month-end, Hirsch Nov–Apr) — daily data now available in `data/nifty50_daily_2002_2026.csv`
 - Machine-learning regime classifier — **not until the baseline research framework is robust**
 
 ## Rule

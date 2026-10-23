@@ -2,164 +2,185 @@
 
 ## Status
 
-**Lab complete.** The notes and lab are written. Answer the completion test from memory before moving to Chapter 12.
+**Chapter complete (Level 2 — Replicate).** Notes checked against the printed text, pp. 485–526.
+Labs: [`labs/ch11_lab.ipynb`](../labs/ch11_lab.ipynb) (Parts 1–3, synthetic) and [`labs/ch11_extras.ipynb`](../labs/ch11_extras.ipynb) (copper replication, book errors, Slutsky–Yule, NIFTY monthly test, Hilbert gain). NIFTY replication of Parts 4–5: [`research/002-nifty-cycle-tools/`](../research/002-nifty-cycle-tools/README.md).
 
-Lab: [`labs/ch11_lab.ipynb`](../labs/ch11_lab.ipynb). Code: [`lib/indicators.py`](../lib/indicators.py), [`lib/cycles.py`](../lib/cycles.py). Copper data and provenance: [`data/`](../data/DATA_PROVENANCE.md).
+## Chapter map (Kaufman's own headings)
+
+| Part | Kaufman section | Pages |
+|---|---|---|
+| 1 | Cycle Basics | 485–494 |
+| 2 | Uncovering the Cycle (detrending, trigonometric regression) | 494–505 |
+| 3 | Fourier Analysis (spectral analysis) | 505–513 |
+| 4 | Maximum Entropy (MESA, phase angle, Hilbert, Fisher) | 514–520 |
+| 5 | Cycle Channel Index, Short Cycle Indicator, Phasing | 520–526 |
+
+Items marked *(extra)* are good research practice but are not from Kaufman.
 
 ---
 
-## 1. Price components
+## Part 1 — Cycle Basics (pp. 485–494)
+
+Trend, seasonality and cycle are the three orderly components of price; noise is the rest.
 
 [
-\text{Price} = \text{Trend} + \text{Seasonal} + \text{Cycle} + \text{Noise}
+P_t = T_t + S_t + C_t + \epsilon_t
 ]
 
-To see the cycle, remove the trend (and the seasonal component, unless it is the cycle you want). Seasonality is the most regular cycle, because it has a physical cause.
-
-Before trusting a cycle:
-- know **why** it should exist (cattle breeding, inventory, elections);
-- see **at least 8 repetitions**;
-- expect the period to drift. The Swiss franc cycle moved from 24–35 weeks to 30–52 weeks.
-
----
-
-## 2. Describing a cycle
+- To find one component, remove the others: first differences remove trend; subtracting a 1-year average removes seasonality.
+- Cycles combine as **harmonics**: a smaller cycle is often ½, ⅓, ¼ … of a larger one. Synchronised cycles peak together.
+- Observe a cycle *and know why it exists* before trusting it (cattle: production/feeding schedule; Swiss franc: no clear fundamental cause, period drifted from 24–35 to 30–52 weeks).
+- Ehrlich Cycle Finder: need **at least 8 repetitions** before concluding a cycle is valid.
+- Business cycle ~8.6 years (Princeton Economic Institute); Kondratieff wave ~54 years — only ~3 completed cycles, so timing is impractical (a 10% period error = 5 years).
+- Presidential election cycle: pre-election year strongest historically; treat as a claim needing fresh validation.
 
 [
-y = a\sin(\omega\phi + b)
+\boxed{\text{Longer period} \Rightarrow \text{fewer repetitions} \Rightarrow \text{weaker validation}}
 ]
-
-- amplitude (a), period (T), frequency (\omega = 1/T) (or (360°/T) per bar), phase (b);
-- a compound wave is a sum of waves: (y = a_1\sin(\omega_1\phi+b_1) + a_2\sin(\omega_2\phi+b_2));
-- the peaks of the components rarely line up, so the compound wave never reaches (a_1 + a_2).
 
 ---
 
-## 3. Removing the trend
+## Part 2 — Uncovering the Cycle (pp. 494–505)
 
-| Method | Formula |
+**Simple detrending:** subtract a moving average of the cycle length, or take (P_t - P_{t-n}). Oscillators reveal an n-day cycle only if their period is ≤ n/2.
+
+**Two-EMA method (p. 495):** longer EMA = **half the dominant cycle**, shorter EMA = **half the longer one**; their difference is a synthetic, less-lagged detrended series.
+
+**Triangular weighting (p. 495):** centre weight 2.0, weights fall linearly to the ends (P = 10 → 0.4, 0.8, 1.2, 1.6, 2.0, 1.6, 1.2, 0.8, 0.4; oldest price dropped to keep an odd count). **Triangular MACD** = difference of a full and a half-period triangular average (20-10 on IBM, 252-126 on corn). Smooth, but behaves like momentum: uneven peaks and amplitudes.
+
+**Terminology (p. 496):** amplitude a, period T, frequency (Kaufman) = 360/T degrees per day, phase = starting offset, phase angle = clock minute hand with **0° at three o'clock**.
+
+[
+y = a\sin(\omega\phi + b), \qquad y = a_1\sin(\omega_1\phi+b_1) + a_2\sin(\omega_2\phi+b_2)
+]
+
+Turning points of a compound wave: first derivative = 0; second derivative sign tells max (<0) or min (>0).
+
+**Single-frequency regression (copper, pp. 499–502):**
+1. Detrend with least squares: (y = 28.89 + 0.267x).
+2. Fit (y_t = a\cos\omega t + b\sin\omega t).
+3. Kaufman finds ω directly by solving (\cos\omega - \tfrac{1}{2}\alpha = 0) with (\alpha\sum c^2 = \sum cd), (c = y_n), (d = y_{n-1}+y_{n+1}) → α = 1.464, **ω = 42.9°, T = 8.4 quarters**.
+4. Solve the normal equations for a, b → (a=-0.603, b=1.831). Matches 7 of 8 copper peaks — "not much more than the Ehrlich Cycle Finder".
+
+*(replication, `ch11_extras.ipynb`)* From Table 11.4 the trend reproduces (28.92 + 0.265x on the first 67 quarters), but **α does not**: no window of the printed table gives Σc² = 6338.4, Σcd = 9282.2. The data give α ≈ 1.63, a period of about **10 quarters**, and the single cycle explains only ~10% of the detrended variance. The text's "peaks about four years apart" (16 quarters) matches neither.
+
+*(extra)* Equivalent intuition: for a fixed ω the fit is linear; amplitude (A=\sqrt{a^2+b^2}). A period-by-period SSE search is a teaching device, not Kaufman's method.
+
+**Two-frequency regression (pp. 502–505):** ω₁, ω₂ from a quadratic in (x=\cos\omega); copper → 10.6 and 2.6 quarters. More flexible → better in-sample fit, more overfitting risk.
+
+---
+
+## Part 3 — Fourier Analysis (pp. 505–513)
+
+- Fourier = complex trigonometric regression: any series as a sum of sines and cosines.
+- **Only reliable on stationary data** — agricultural products more suitable than stocks that change structure; may need to remove inflation or FX.
+- Coefficients (p. 506): (u_k, v_k) for k = 1 … N/2.
+- **Phase** between cycles: 180° = out of phase; 0° = coincident.
+- **Periodogram → spectral density**: peak height ≈ amplitude²; noise of the same size as the cycle would obscure it.
+- **Remove the trend** (first differences or linear regression) or it shows up as the dominant cycle. Seasonal component need not be removed.
+- Longer cycles have **wider peaks** — wider does not mean more important.
+- Need at least one full cycle of data (12 months for seasonality); more is better.
+
+**Weighting factors (p. 509):**
+
+[
+\hat y(\omega)=\frac{1}{\pi}\left(\lambda_0c_0+2\sum_{k=1}^{M}\lambda_k c_k\cos\omega k\right),\quad c_k=\sum\frac{(y_t-\bar y)(y_{t-k}-\bar y)}{N}
+]
+
+Truncation point M < N; lag window λ_k: Tukey (\tfrac12(1+\cos\tfrac{\pi k}{M})) or Parzen.
+
+**FFT practice (pp. 510–513):** detrend, taper the endpoints with a bell-shaped window, pre-filter with a moving average (an n-day MA removes cycles shorter than **2n** days). 40-day cycle = 9° per day. Excel: power-of-2 sample ≤ 4,096, use returns if prices trended, IMABS for magnitude.
+
+**Book error (Figures 11.16–11.17):** the first 12 Excel FFT rows are labelled Jan–Dec. Row k is a cycle of **N/k** bars, not calendar month k (with N = 128, row 11 is an 11.6-month cycle). Seasonality shows up only near the 12-month period.
+
+*(extra)* Testable periods are N/k; off-grid cycles leak into neighbouring bins; market spectra rise towards long periods (red noise).
+
+*(extra)* **Smoothing creates cycles (Slutsky–Yule).** A triangular MACD 40-20 applied to a random walk shows regular "cycles" 23–38 bars apart — the filter's pass band, not the market. Defence: a pre-declared test of the largest periodogram peak against shuffled returns. On **NIFTY monthly** log returns (2002-02 to 2025-12, periods 3–60 months, 5,000 shuffles) the largest peak is at 4.8 months, **p ≈ 0.80**: no evidence of a cycle.
+
+---
+
+## Part 4 — Maximum Entropy (pp. 514–520)
+
+- **MESA** (Ehlers): finds cycles in small windows where FFT needs ≥ 256 points and ~16 cycles. Useful cycles exist ~20% of the time.
+- **Phase angle:** a pure cycle gives a rising **sawtooth**; erratic phase = cycle breaking down.
+- **Ehlers' lateral shift:** *if a short-term cycle exists, the market is not trending.* Use cycles to classify trend vs sideways, not to trade the cycle.
+- **Hilbert transform (p. 516):**
+  [
+  Q = 0.0962P_t + 0.5769P_{t-2} - 0.5769P_{t-4} - 0.0962P_{t-6},\quad I = P_{t-3},\quad \theta=\arctan(Q/I)
+  ]
+  Peak ≈ 270°, trough ≈ 90°. Needs ~4 bars. Sharp peaks suit mean reversion; behaves like momentum (big peaks after quiet periods).
+  *(extra)* This filter shifts phase by exactly 90° but shrinks Q at longer periods (0.51× at 20 bars). Ehlers corrects it with Q × (0.075·Period + 0.54), which the book omits. Without it the phase steps unevenly (9–32° per bar on a 20-bar sine, ideal 18°); `lib.indicators.hilbert_phase` applies the correction.
+- **Fisher transform (pp. 518–519):**
+  [
+  X_t = 0.5\cdot2\left(\frac{P_t-\text{MinL}}{\text{MaxH}-\text{MinL}}-0.5\right)+0.5X_{t-1},\qquad y = 0.5\ln\frac{1+x}{1-x}
+  ]
+  U-shaped channel position → bell shape. Trigger = previous value; best signals just after an extreme. Output is unbounded (book says ±1 — that is the input); clip x below ±1.
+- **Inverse Fisher (p. 520):** (x = (e^{2y}-1)/(e^{2y}+1)) on RSI(20) of 10-bar momentum, rescaled 0.1·(RSI−50), 30-bar WMA.
+
+---
+
+## Part 5 — CCI, Short Cycle Indicator, Phasing (pp. 520–526)
+
+**Commodity Channel Index (Lambert):**
+
+[
+\text{CCI}_t=\frac{x_t-\bar x_t}{0.015\times MD_t},\qquad x_t=\frac{H_t+L_t+C_t}{3}
+]
+
+N < ¼ of the cycle; use a **simple** MA (fixed window fits a cycle; EMA keeps old data). 0.015 is meant to put 70–80% of values inside ±100. **Rule: above +100 = cyclic turn UP; below −100 = turn DOWN** — Lambert goes *with* the move, the opposite of the popular "overbought" reading.
+
+**Short Cycle Indicator (Lorca-Susino):** intraday bars, multiple time frames. Fast EMA 8, slow EMA 20, LH = lowest high, HL = highest low over 20 bars.
+
+[
+\text{Lorca1}=\frac{(XS-LH)^2+(XS-HL)^2}{XS}\times\frac{XF-XS}{XF}\times SF_1
+]
+
+= (distance of the slow trend from the channel — a volatility term) × (normalised fast–slow EMA gap — a MACD term). Sell signals need a volatility-expansion pattern (three conditions with 12/14/16/32-bar lookbacks). Many fixed constants → high overfitting risk.
+
+**Hurst phasing:**
+- Full span F ≈ average distance between tops; half span H = F/2.
+- An F-day MA describes price **F/2 days ago**. *Phasing* plots each MA half its length back so it overlays price.
+- Crossings of the phased MAs → regression line = projected trend (Y_T = a + bX_T).
+- Project the half-span from its last extreme A (Y_C = c + dX_C); solve for the next crossing X.
+- D = furthest price went beyond the trend since the last crossing; **objective = crossing ∓ D**.
+- Rules: long when the half-span MA turns up; short when it turns down; close if the objective is reached (allow 10% of cycle height).
+- **The last F/2 days of a centred MA do not exist yet** — they must be projected. Using the centred line as if known is look-ahead.
+
+---
+
+## Tested on NIFTY (daily 2002–2026, causal, next-open fills, costs)
+
+| Tool | Result |
 |---|---|
-| MA residual | (P_t - MA_n(P)_t) |
-| n-bar difference | (P_t - P_{t-n}), which also deletes cycles of length (n) |
-| Two-EMA MACD | long EMA = ½ dominant cycle, short = ½ long |
-| Least-squares line | (P_t - (a + bt)) |
-| Triangular MACD | (TMA_P - TMA_{P/2}) |
+| MESA | 27% of days the "dominant cycle" = search limit (red noise); price hit rate 49% vs 56.5% "always up" |
+| Phase angle | Regular 38% of the time, but episodes last ~6 days |
+| Lateral shift | Did not predict choppier next 20 days; regime switching lowered Sharpe 0.66 → 0.27 |
+| Hilbert | Next-10-day return after buy signals = any random day (0.55% vs 0.56%) |
+| Fisher | Distribution works; trigger trading = 174 trades/yr, edge lost overnight |
+| Inverse Fisher | Trend filter (Sharpe 0.85) — beaten by a 50-day MA (1.09) |
+| CCI | Only 54% inside ±100 (book: 70–80%); signals = random days; no rule beat buy & hold |
+| Hurst (honest) | Long-only Sharpe 0.92 — a 20-day MA slope trend filter; turns arrive ~7 days after the centred turn |
+| **Look-ahead** | Full-sample FFT Hilbert: Sharpe 3.25; centred-MA Hurst: Sharpe 2.88 |
 
-An oscillator meant to show a cycle of length (T) needs a period of at most (T/2).
+**Lessons that matter for the model**
 
-### Triangular weights
-
-Weights step up by (2/(P/2)) to 2.0 at the centre and back down. For (P = 10): 0.4, 0.8, …, 2.0, …, 0.4 (9 values, summing to 10).
-
-[
-TMA_t = \frac{w_1P_{t-P+2} + w_2P_{t-P+3} + \dots + w_{P-1}P_t}{P}
-]
-
-The book prints `×` between the terms by mistake.
-
----
-
-## 4. Single-frequency trigonometric regression
-
-1. Detrend with a least-squares line.
-2. (\alpha = \Sigma cd / \Sigma c^2), with (c = y_n), (d = y_{n-1} + y_{n+1}).
-3. (\cos\omega = \alpha/2), so (T = 360°/\omega).
-4. Fit (y_t = a\cos\omega t + b\sin\omega t) by least squares.
-
-Why it works: (\sin\omega(t-1) + \sin\omega(t+1) = 2\cos\omega\,\sin\omega t).
-
-**Replication result:** the trend line reproduces (28.92 + 0.265x on the first 67 quarters vs the book's 28.89 + 0.267x), but α does not. The data give a period of about 10 quarters, against the book's 8.4. The fitted cycle explains only about 10% of the detrended variance.
-
----
-
-## 5. Fourier analysis and the periodogram
-
-- Fourier analysis writes a series as a sum of sine and cosine waves. Spectral power is proportional to amplitude squared.
-- It assumes **stationarity**, so detrend first. A trend appears as a huge "cycle" as long as the data.
-- Resolution: FFT bins sit at periods (N/k). Periods are only measured to within a bin.
-- Lag windows (Tukey, Parzen) smooth the estimate because long-lag autocorrelations are unreliable.
-
-**Book error (pp. 511–513):** Excel FFT rows 1–12 are labelled Jan–Dec. Row (k) is a cycle of (N/k) bars, not month (k). Seasonality appears only near the 12-month period.
-
----
-
-## 6. Smoothing creates cycles (Slutsky–Yule)
-
-A band-pass filter (any MA difference) applied to a random walk produces a regular-looking cycle in the filter's pass band. In the lab, a triangular MACD 40-20 on a random walk shows "cycles" about 23–39 bars apart.
-
-[
-\boxed{\text{A cycle seen through a filter may belong to the filter}}
-]
-
-Defence: pre-declare a test, for example the largest periodogram value against shuffled returns.
-
-**NIFTY result:** monthly log returns 2002-02 to 2025-12, periods 3–60 months, 5,000 shuffles. Largest peak at 4.8 months, p ≈ 0.80. No evidence of a cycle.
-
----
-
-## 7. Ehlers: MESA and the Hilbert transform
-
-- MESA finds cycles from short samples. Ehlers uses it to **classify the market**: *if a short-term cycle exists, the market is not trending.*
-- Hilbert transform: (I = P_{t-3}), (Q = 0.0962P_t + 0.5769P_{t-2} - 0.5769P_{t-4} - 0.0962P_{t-6}).
-- The phase angle forms a sawtooth while the cycle holds, and breaks down when it ends.
-- Missing from the book: Q needs a gain correction of (0.075\cdot\text{Period} + 0.54). The angle direction depends on the convention (the book measures it clockwise).
-- A filtered random walk can also produce a clean sawtooth for a while.
-
----
-
-## 8. Fisher and inverse Fisher transforms
-
-- A sine wave spends most of its time near its extremes, so its distribution is U-shaped.
-- Fisher: (X_t = 0.5\cdot2\cdot(\text{channel position} - 0.5) + 0.5X_{t-1}), then (y = 0.5\ln\frac{1+X}{1-X}). This gives sharper turning points. The trigger is the previous value.
-- Inverse Fisher on RSI: (x_2 = WMA(0.1(RSI - 50))), output (100\cdot\frac{e^{2x_2}-1}{e^{2x_2}+1}). The values cluster near ±100.
-
----
-
-## 9. Commodity Channel Index (Lambert)
-
-[
-CCI_t = \frac{x_t - \bar x_t}{0.015\,MD_t}, \qquad x_t = \frac{H_t+L_t+C_t}{3}
-]
-
-- (N) should be less than ¼ of the cycle; values above +100 or below −100 mark a cyclic turn.
-- The book prints (\bar x_t) as a sum. It must be the **average**.
-
----
-
-## 10. Hurst's phasing
-
-- Plot the full-span and half-span MAs half their length back in time, so they sit on the price swings.
-- Fit a trend through their crossings, project the half-span average, and measure the distance (D) above the trend to set a symmetric price target below it.
-- **Look-ahead:** the phased MA has no value for the last (F/2) bars. A backtest must use only the projection that was available at the time.
-
----
-
-## 11. Not implemented
-
-- Full MESA (Burg's algorithm).
-- The Short Cycle Indicator (Lorca-Susino): the formula on p. 522 uses a term (C) that is never defined.
-
----
-
-## Failure modes
-
-1. The trend is mistaken for a long cycle.
-2. Differencing or smoothing creates or deletes cycles.
-3. Too few repetitions, or the period drifts.
-4. Picking the tallest periodogram peak without a null test.
-5. Centred or phased averages look ahead.
-6. Cycle indicators often duplicate momentum (Chapter 9).
-7. Published numbers may not reproduce (the copper α).
+1. Detrending, smoothing and window choices are model parameters — document them.
+2. Every frequency search is a multiple-testing problem; test forecasts against **price**, not the filter.
+3. Stationary-cycle tools struggle with drifting, short-lived market cycles.
+4. **Centred or full-sample filters create spectacular, fake backtests.** Use only data available at the decision time.
+5. On NIFTY the tools that survived were trend/momentum filters, not cycle timers.
+6. Published numbers may not reproduce (copper α); record that, never tune inputs to force a match.
 
 ---
 
 ## Chapter 11 completion test
 
-- What are amplitude, period, frequency and phase?
-- Name three ways to remove a trend, and say what each one does to cycles.
-- How does the single-frequency method get the period from (\alpha)?
-- What does an FFT output row mean? Why is the Jan–Dec label wrong?
-- Explain the Slutsky–Yule effect in one sentence.
-- What null hypothesis was used for NIFTY, and what are its limits?
-- What does a broken Hilbert phase sawtooth mean to Ehlers?
-- Why can't Hurst's phased averages be used directly in a backtest?
+- Why do long cycles have weak statistical support?
+- What does Kaufman's two-EMA rule say about EMA lengths?
+- How does Kaufman find ω for copper, and what period did he get?
+- Why must data be stationary for Fourier analysis?
+- What do the Tukey and Parzen lag windows do?
+- What is Ehlers' lateral shift?
+- Why does a Fisher transform make extremes meaningful — and why doesn't that create an edge?
+- Does a CCI above +100 mean buy or sell in Lambert's rules?
+- Why is a centred moving average look-ahead in a backtest?

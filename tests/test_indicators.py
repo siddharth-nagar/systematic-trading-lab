@@ -95,3 +95,7 @@ def test_hilbert_phase_advances_360_over_period(period):
     sine = np.sin(2 * np.pi * np.arange(300) / period)
     steps = np.diff(ind.hilbert_phase(sine, period).dropna().to_numpy()) % 360
     assert abs(np.median(steps) - 360 / period) < 1
+
+
+def test_regression_slope_of_line():
+    assert np.allclose(ind.regression_slope(s(3 + 0.5 * np.arange(30)), 10).dropna(), 0.5)

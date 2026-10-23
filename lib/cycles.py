@@ -1,4 +1,8 @@
-"""Spectral and cycle-fitting tools (Kaufman Ch 11)."""
+"""Spectral and cycle-fitting tools (Kaufman Ch 11).
+
+highpass_detrend, cycle_mode, burg and mesa_burg are copied unchanged from
+research/002-nifty-cycle-tools/cycle_tools.py, where they were checked for causality.
+"""
 import numpy as np
 import pandas as pd
 
@@ -62,3 +66,84 @@ def turning_point_spacing(x):
     s = np.sign(np.diff(np.asarray(x)))
     peaks = np.flatnonzero((s[:-1] > 0) & (s[1:] <= 0)) + 1
     return np.diff(peaks)
+
+
+# --- Causal tools from Research 002 -----------------------------------------
+
+def highpass_detrend(price, cutoff=48):
+    """Remove trend causally. Input: price series. Output: detrended, lightly smoothed series.
+
+    Uses 100*ln(price) so the scale is comparable in 2002 (~1,000) and 2026 (~25,000).
+    Ehlers 2-pole high-pass: passes cycles shorter than ~`cutoff` bars, removes longer swings/trend.
+    The 4-bar WMA (4,3,2,1)/10 removes 2-3 bar noise.
+    """
+    x = 100 * np.log(np.asarray(price, dtype=float))
+    w = 0.707 * 2 * np.pi / cutoff
+    a = (np.cos(w) + np.sin(w) - 1) / np.cos(w)
+    hp = np.zeros_like(x)
+    for t in range(2, len(x)):
+        hp[t] = ((1 - a / 2) ** 2 * (x[t] - 2 * x[t - 1] + x[t - 2])
+                 + 2 * (1 - a) * hp[t - 1] - (1 - a) ** 2 * hp[t - 2])
+    sm = np.full_like(hp, np.nan)
+    sm[3:] = (4 * hp[3:] + 3 * hp[2:-1] + 2 * hp[1:-2] + hp[:-3]) / 10
+    out = pd.Series(sm, index=getattr(price, "index", None))
+    out.iloc[:2 * cutoff] = np.nan          # filter warm-up
+    return out
+
+
+def cycle_mode(dphase, lookback=10, min_period=6, max_period=50, need=8):
+    """Phase-regularity rule (Kaufman p.514: a regular sawtooth means a cycle is present).
+
+    A bar is 'cycle-like' when the phase advanced by 360/max_period .. 360/min_period degrees.
+    Cycle mode = at least `need` of the last `lookback` bars were cycle-like.
+    """
+    ok = dphase.between(360 / max_period, 360 / min_period)
+    count = ok.rolling(lookback).sum()
+    return (count >= need).where(count.notna())
+
+
+def burg(x, order):
+    """Burg's maximum-entropy AR fit. Returns a (a[0]=1) and residual power E.
+    Model: x_t + a1 x_{t-1} + ... + ap x_{t-p} = e_t
+    """
+    x = np.asarray(x, dtype=float)
+    f, b = x[1:].copy(), x[:-1].copy()
+    a = np.array([1.0])
+    E = np.dot(x, x) / len(x)
+    for _ in range(order):
+        k = -2 * np.dot(f, b) / (np.dot(f, f) + np.dot(b, b))
+        a = np.concatenate([a, [0.0]])
+        a = a + k * a[::-1]
+        f, b = (f + k * b)[1:], (b + k * f)[:-1]
+        E *= 1 - k * k
+    return a, E
+
+
+def mesa_burg(x, window=60, order=10, periods=np.arange(6, 51), horizon=5):
+    """Rolling MESA on the detrended series. For each bar t uses x[t-window+1 .. t] only.
+
+    Returns dominant period, strength (peak power / mean power across periods),
+    and an AR forecast of the change in x over the next `horizon` bars.
+    """
+    x = pd.Series(x)
+    vals = x.to_numpy()
+    n = len(vals)
+    dom = np.full(n, np.nan); strength = np.full(n, np.nan); fc = np.full(n, np.nan)
+    k = np.arange(order + 1)
+    E_mat = np.exp(-2j * np.pi * np.outer(1 / periods, k))      # (periods, order+1)
+    for t in range(window - 1, n):
+        w = vals[t - window + 1:t + 1]
+        if np.isnan(w).any():
+            continue
+        w = w - w.mean()
+        a, E = burg(w, order)
+        spec = E / np.abs(E_mat @ a) ** 2
+        j = int(np.argmax(spec))
+        dom[t] = periods[j]
+        strength[t] = spec[j] / spec.mean()
+        hist = list(w[-order:])
+        for _ in range(horizon):                                 # AR projection
+            hist.append(-np.dot(a[1:], hist[::-1][:order]))
+        fc[t] = hist[-1] - w[-1]
+    return pd.DataFrame({"dom_period": dom, "strength": strength, "forecast_change": fc},
+                        index=x.index)

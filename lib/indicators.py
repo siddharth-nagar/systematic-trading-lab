@@ -46,6 +46,12 @@ def triangular_macd(series, period):
     return tma(series, period) - tma(series, period // 2)
 
 
+def regression_slope(series, n):
+    """Least-squares slope of the last n bars (Kaufman's LRS trend system, Ch 8)."""
+    x = np.arange(n) - (n - 1) / 2
+    return series.rolling(n).apply(lambda y: np.dot(x, y) / np.dot(x, x), raw=True)
+
+
 # --- Momentum and oscillators (Ch 9) ---------------------------------------
 
 def momentum(series, n=20):

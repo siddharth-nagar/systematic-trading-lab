@@ -17,16 +17,17 @@ Learn → Explain → Implement → Visualise → Test lightly → Record → Mo
 | Path | Contents |
 |---|---|
 | `notes/chNN-topic.md` | Chapter summary: formulas, failure modes, completion test |
-| `labs/` | Chapter notebooks/scripts. They import from `lib/` and define no indicator code of their own |
+| `labs/` | Chapter notebooks/scripts. New labs import from `lib/` and define no indicator code of their own |
 | `lib/` | Shared code. Every function needs a test in `tests/` |
-| `research/NNN-name/` | Statistical studies (not strategies): README, HYPOTHESIS, RESULTS, scripts, results/ |
+| `research/NNN-name/` | Statistical studies (not strategies): README, protocol/hypothesis, results, scripts, results/ |
 | `strategies/NNN-name/` | Copy `strategies/_template/`. Write HYPOTHESIS.md and commit it **before** any backtest |
-| `experiments/log.csv` | One row per test or backtest run, including the commit hash |
+| `experiments/log.csv`, `log.md` | One CSV row per test or backtest run (with the commit hash), plus a narrative entry |
 | `data/` | Small curated data, committed, documented in `data/DATA_PROVENANCE.md`. Large or downloadable data goes in `data/downloads/` (gitignored), with a committed fetch script |
 
 ## Rules for code
 
-- Use `lib.backtest.run` for every backtest. Timing: a position decided on bar t's close earns the return from t to t+1. Never use same-bar returns.
+- Use `lib.backtest.run` for every new backtest. A position is decided on bar t's close and filled at that close, the next open (default protocol for NIFTY work, `fill='next_open'`) or the next close. Never use same-bar returns.
+- Code written before `lib/` existed (`labs/ch08_lab.ipynb`, `labs/ch11_lab.ipynb`, `research/001-*`, `research/002-*`) keeps its own functions so its published numbers reproduce exactly. Do not refactor it onto `lib/` unless the results are re-checked and the notes updated.
 - No look-ahead. Centred or phased averages (Ch 10 seasonal index, Hurst phasing) are for description only.
 - Never fill missing prices silently. Returns must not span gaps.
 - Fix random seeds. Write CSVs with fixed precision (`float_format="%.6f"`) so re-runs are byte-identical.
@@ -41,6 +42,7 @@ Learn → Explain → Implement → Visualise → Test lightly → Record → Mo
 - pp. 501–502: the copper α = 1.464 (period 8.4 quarters) does not reproduce from Table 11.4. The data give about 10 quarters.
 - pp. 511–513: Excel FFT output rows are labelled Jan–Dec. Row k is a cycle of N/k bars, not a month.
 - p. 516: the Hilbert Q needs Ehlers' gain correction (0.075·Period + 0.54), which the book omits.
+- p. 519: the Fisher transform's output is unbounded; the ±1 range the book gives applies to its input.
 - p. 521: the CCI mean x̄ is printed as a sum; it is an average.
 
 ## Commits
