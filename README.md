@@ -18,7 +18,7 @@ Standing rules (for you and for Claude) are in [CLAUDE.md](CLAUDE.md).
 | 9 — Momentum and oscillators | [notes](notes/ch09-momentum-oscillators.md) | [ch09_lab.ipynb](labs/ch09_lab.ipynb) (synthetic) | yes, pp. 369–426 |
 | 10 — Seasonality and calendar patterns | [notes](notes/ch10-seasonality.md) | [Research 001](research/001-nifty-seasonality/README.md), [ch10_seasonal_index.py](labs/ch10_seasonal_index.py) | yes, pp. 427–484 |
 | 11 — Cycle analysis | [notes](notes/ch11-cycle-analysis.md) | [ch11_lab.ipynb](labs/ch11_lab.ipynb) (synthetic), [ch11_extras.ipynb](labs/ch11_extras.ipynb), [Research 002](research/002-nifty-cycle-tools/README.md) | yes, pp. 485–526 |
-| 12 — Volume, open interest, breadth | next (needs data: NIFTY futures volume/OI, NSE advance-decline) | — | — |
+| 12 — Volume, open interest, breadth | next | data pipeline ready: `data/fetch_nse.py` → `data/build_nse_daily.py` (not yet run on real data) | — |
 
 ## Research findings so far
 
@@ -58,6 +58,7 @@ systematic-trading-lab/
 │   ├── cycles.py           # periodogram, trig regression, cycle permutation test, high-pass detrend, MESA (Burg), cycle mode
 │   ├── signals.py          # crossovers, entry/exit → position
 │   ├── backtest.py         # the one backtest engine (close / next-open / next-close fills)
+│   ├── nse.py              # NSE bhavcopy parsers (legacy + UDiFF), futures totals, breadth
 │   └── metrics.py          # CAGR, Sharpe, max DD, MAR, profit factor, win rate
 ├── research/
 │   ├── 001-nifty-seasonality/
@@ -69,7 +70,7 @@ systematic-trading-lab/
 │   ├── log.csv             # one row per run: date, id, commit, params, result
 │   └── log.md              # narrative entries
 ├── tests/                  # unit tests for lib/
-├── data/                   # small curated data + provenance; data/downloads/ is gitignored
+├── data/                   # small curated data + provenance; fetch_nse.py / build_nse_daily.py; data/downloads/ is gitignored
 └── pyproject.toml          # pinned dependencies
 ```
 
@@ -79,6 +80,8 @@ systematic-trading-lab/
 python -m venv .venv && source .venv/bin/activate
 pip install -e ".[dev]"
 python -m pytest                     # lib/ must pass before any research
+python data/fetch_nse.py --start 2024-06-24 --end 2024-07-19   # NSE data for Ch 12 (needs access to nseindia.com)
+python data/build_nse_daily.py       # then read data/downloads/nse/build_report.txt
 jupyter nbconvert --to notebook --execute --inplace labs/ch11_extras.ipynb
 ```
 
