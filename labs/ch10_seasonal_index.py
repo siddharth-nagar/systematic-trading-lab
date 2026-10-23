@@ -2,14 +2,14 @@
 
 Descriptive replication of the book's method, not a test and not a trading signal.
 Reads the committed NIFTY monthly file; never fills missing months.
-Run: python 01_kaufman/chapter_10_seasonality/seasonal_index.py
+Run: python labs/ch10_seasonal_index.py
 """
 from pathlib import Path
 import pandas as pd
 import matplotlib.pyplot as plt
 
 HERE = Path(__file__).resolve().parent
-DATA = HERE.parents[1] / "02_nifty_seasonality" / "data" / "nifty50_monthly_2000_2026_partial.csv"
+DATA = HERE.parent / "data" / "nifty50_monthly_2000_2026_partial.csv"
 
 df = pd.read_csv(DATA, parse_dates=["month"]).set_index("month").sort_index()
 df = df[df.index < "2026-01-01"]
@@ -36,7 +36,7 @@ assert abs(raw["seasonal_index"].mean() - 100) < 1e-9
 
 out = HERE / "results"
 out.mkdir(exist_ok=True)
-raw.to_csv(out / "seasonal_index.csv", float_format="%.6f")
+raw.to_csv(out / "ch10_seasonal_index.csv", float_format="%.6f")
 
 # Step 4 (deseasonalise): divide price by its month's index. Shown for learning only.
 deseasonalised = close / close.index.month.map(raw["seasonal_index"]).to_numpy() * 100
@@ -52,8 +52,8 @@ ax2.plot(deseasonalised.index, deseasonalised, label="Deseasonalised close", alp
 ax2.set(yscale="log", title="Trend and deseasonalised series", ylabel="Index level (log)")
 ax2.legend()
 fig.tight_layout()
-fig.savefig(out / "seasonal_index.png", dpi=160)
+fig.savefig(out / "ch10_seasonal_index.png", dpi=160)
 plt.close(fig)
 
 print(raw.round(3).to_string())
-print("\nDescriptive only. Compare with 02_nifty_seasonality, which found no significant month effect.")
+print("\nDescriptive only. Compare with research/001-nifty-seasonality, which found no significant month effect.")

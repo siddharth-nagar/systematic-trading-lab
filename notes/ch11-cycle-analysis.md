@@ -4,7 +4,7 @@
 
 **Lab complete.** The notes and lab are written. Answer the completion test from memory before moving to Chapter 12.
 
-Lab: [`ch11_lab.ipynb`](ch11_lab.ipynb). Copper data and provenance: [`data/`](data/DATA_PROVENANCE.md).
+Lab: [`labs/ch11_lab.ipynb`](../labs/ch11_lab.ipynb). Code: [`lib/indicators.py`](../lib/indicators.py), [`lib/cycles.py`](../lib/cycles.py). Copper data and provenance: [`data/`](../data/DATA_PROVENANCE.md).
 
 ---
 

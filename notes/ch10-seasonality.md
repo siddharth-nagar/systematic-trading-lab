@@ -4,7 +4,7 @@
 
 **Chapter complete (notes written retrospectively).**
 
-The applied work for this chapter lives in [`02_nifty_seasonality/`](../../02_nifty_seasonality/README.md). This folder records the chapter's core concepts and replicates the book's ratio-to-moving-average seasonal index in [`seasonal_index.py`](seasonal_index.py).
+The applied work for this chapter lives in [`research/001-nifty-seasonality/`](../research/001-nifty-seasonality/README.md). The book's ratio-to-moving-average seasonal index is replicated in [`labs/ch10_seasonal_index.py`](../labs/ch10_seasonal_index.py).
 
 These notes were written after the NIFTY study. Check the formulas against the book text before relying on them.
 
@@ -43,7 +43,7 @@ For each calendar month (m):
 
 Also record the **frequency** of positive returns (how consistent the pattern is), not only the average size.
 
-This is what `02_nifty_seasonality/analyse.py` computes.
+This is what `research/001-nifty-seasonality/analyse.py` computes.
 
 ---
 
@@ -70,9 +70,9 @@ An index of 103 means that month's price typically sits about 3% above trend.
 
 **Look-ahead warning:** the centred MA uses the *next* 6 months. That is fine for describing history, but the index cannot be used as a real-time signal without rebuilding it from past data only.
 
-### NIFTY result (2000–2025, see `results/seasonal_index.csv`)
+### NIFTY result (2000–2025, see `labs/results/ch10_seasonal_index.csv`)
 
-The index runs from about 98.2 (Mar) to 103.2 (Dec). Each month's ratios have a standard deviation of about 5–8 points across 23 years, so the uncertainty in each monthly average is roughly ±1.3 points. Most of the pattern is within noise. This matches the omnibus test in `02_nifty_seasonality` (p ≈ 0.57).
+The index runs from about 98.2 (Mar) to 103.2 (Dec). Each month's ratios have a standard deviation of about 5–8 points across 23 years, so the uncertainty in each monthly average is roughly ±1.3 points. Most of the pattern is within noise. This matches the omnibus test in `research/001-nifty-seasonality` (p ≈ 0.57).
 
 Note that a **level** index and **return** averages answer different questions. December has the highest level relative to trend, so January (the move away from that level) shows the weakest average return.
 

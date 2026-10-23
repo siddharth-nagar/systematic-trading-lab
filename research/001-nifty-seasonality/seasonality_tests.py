@@ -1,14 +1,14 @@
 """NIFTY neutral omnibus month-effect test. Not a trading system.
 
 No online fetch; reads the committed monthly file. Requires pandas, numpy.
-Usage: python 02_nifty_seasonality/seasonality_tests.py
+Usage: python research/001-nifty-seasonality/seasonality_tests.py
 """
 from pathlib import Path
 import numpy as np
 import pandas as pd
 
 HERE = Path(__file__).resolve().parent
-df = pd.read_csv(HERE / "data/nifty50_monthly_2000_2026_partial.csv")
+df = pd.read_csv(HERE.parents[1] / "data" / "nifty50_monthly_2000_2026_partial.csv")
 df["month"] = pd.to_datetime(df["month"])
 df = df.sort_values("month")
 month_code = df["month"].dt.year * 12 + df["month"].dt.month

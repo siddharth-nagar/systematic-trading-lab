@@ -2,12 +2,12 @@
 
 **Research 001 — documented baseline.** Generated from actual secondary source daily prices and summarised into monthly data. Main statistical table uses months ending through **December 2025**. 2026 observations are **partial** and excluded from rankings.
 
-Start with [research_notes.md](research_notes.md), [hypotheses.md](hypotheses.md), and [data/DATA_PROVENANCE.md](data/DATA_PROVENANCE.md).
+Start with [RESULTS.md](RESULTS.md), [HYPOTHESIS.md](HYPOTHESIS.md), and [the data provenance](../../data/DATA_PROVENANCE.md).
 
-Run locally after `pip install -r ../requirements.txt`:
+Run from the repository root after `pip install -e ".[dev]"`:
 
 ```bash
-python 02_nifty_seasonality/analyse.py
+python research/001-nifty-seasonality/analyse.py
 ```
 
 It reproduces tables and charts in `results/`. No live broker or automated trading integration.
@@ -23,11 +23,11 @@ Our objective is to document **what the history actually says**. Do not optimise
 - `results/year_month_matrix.csv`: year × calendar-month return matrix.
 - `results/mean_monthly_returns.png`, `results/positive_frequency.png`: charts.
 - `results/omnibus_test.csv`, `results/omnibus_report.md`: omnibus month-effect test and write-up.
-- `research_notes.md`: interpretations and limitations.
-- `hypotheses.md`: prior research ideas, explicitly not validated.
+- `RESULTS.md`: interpretations and limitations.
+- `HYPOTHESIS.md`: the neutral research protocol, written before testing.
 - `analyse.py`: reproducible descriptive analysis.
 - `seasonality_tests.py`: omnibus permutation test.
 
 ## Statistical tests
 
-Run `python 02_nifty_seasonality/seasonality_tests.py` to reproduce a neutral omnibus calendar-month test (5,000 within-year permutations) and prespecified two-block descriptive comparison. See [omnibus findings](results/omnibus_report.md). Do not interpret month-by-month differences as confirmed effects without independent validation.
+Run `python research/001-nifty-seasonality/seasonality_tests.py` to reproduce a neutral omnibus calendar-month test (5,000 within-year permutations) and prespecified two-block descriptive comparison. See [omnibus findings](results/omnibus_report.md). Do not interpret month-by-month differences as confirmed effects without independent validation.

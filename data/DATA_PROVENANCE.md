@@ -1,4 +1,8 @@
-# NIFTY 50 price-index monthly dataset — provenance
+# Data provenance
+
+Small curated datasets are committed here so published results reproduce. Large or re-downloadable data goes in `data/downloads/` (gitignored), fetched by a committed script.
+
+## `nifty50_monthly_2000_2026_partial.csv` — NIFTY 50 price-index monthly
 
 - Assembled: 2026-10-13.
 - Series: NIFTY 50 price index, daily close/high/low consolidated to last observed trading-day close and monthly extrema.
@@ -18,10 +22,16 @@
 - **Caveat:** monthly highs and lows cannot tell which intramonth event occurred first; event studies need the daily dataset.
 - No futures costs, options execution/slippage or live trading rules have been tested.
 
-## Gaps and return validation
+### Gaps and return validation
 
 Missing months between January 2000 and December 2025: **2000-08, 2001-01, 2001-09, 2001-10, 2001-11, 2001-12**. Returns that would incorrectly span missing months are left blank (2000-09, 2001-02, 2002-01); initial January 2000 is also blank. Missing-month months themselves are absent and must not be treated as zero returns. This first release has no claim of complete 2000–2025 monthly coverage.
 
 **Missingness is probably not random.** The 2001-09 to 2001-12 gap coincides with the post-9/11 market sell-off. Data missing during a stress period can bias the statistics of the affected calendar months (here Sep–Dec, plus Jan/Feb through blanked returns), so the gaps must be filled from official NSE data before any month-level conclusion is treated as reliable.
 
 Daily overlap mismatch count: 2; largest absolute close-price difference 20.60 index points. Source precedence resolves these but the discrepancy needs independent official verification. Do not interpret the series as error-free.
+
+## `copper_scrap_quarterly_1963_1979.csv` — Kaufman Table 11.4
+
+- Source: Kaufman, *Trading Systems and Methods*, Table 11.4, "Dealer's Buying Price, No. 2 Heavy Copper Scrap at New York" (average quarterly price, cents per pound), based on prices from the American Metal Market.
+- Transcribed by hand from the printed table, 1963 Q1 to 1979 Q4 (68 quarters). Check against the book if a value looks wrong.
+- Used only to replicate the book's single-frequency trigonometric regression (`labs/ch11_lab.ipynb`). Not used for trading research.

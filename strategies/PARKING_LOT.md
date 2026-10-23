@@ -1,4 +1,4 @@
-# Strategy Idea Parking Lot
+# Strategy idea parking lot
 
 Write ideas here instead of interrupting the current learning objective.
 
@@ -6,7 +6,7 @@ Write ideas here instead of interrupting the current learning objective.
 
 Finish Kaufman sequentially. Chapters 9, 10 and 11 are complete; Chapter 12 (volume, open interest and breadth) is next.
 
-The NIFTY seasonality study (`02_nifty_seasonality/`) is paused at the data-audit stage while reading. Resume it only after Chapter 12.
+The NIFTY seasonality study (`research/001-nifty-seasonality/`) is paused at the data-audit stage while reading. Resume it only after Chapter 12.
 
 ## Parked ideas
 

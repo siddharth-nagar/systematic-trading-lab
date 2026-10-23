@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "kaufman-lab"
+version = "0.1.0"
+description = "Learning lab for Perry Kaufman's Trading Systems and Methods"
+requires-python = ">=3.11"
+# Pinned so results reproduce. Upgrade deliberately, then re-run tests and notebooks.
+dependencies = [
+    "numpy==2.5.3",
+    "pandas==3.0.5",
+    "matplotlib==3.11.2",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest==9.1.1",
+    "nbconvert==7.17.2",
+    "ipykernel==7.4.0",
+]
+
+[tool.setuptools]
+packages = ["lib"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

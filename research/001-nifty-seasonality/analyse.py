@@ -1,5 +1,5 @@
 """Reproduce monthly seasonality statistics from repository's recorded monthly data.
-Run: python 02_nifty_seasonality/analyse.py
+Run: python research/001-nifty-seasonality/analyse.py
 Requires pandas and matplotlib. Does not download or modify price data.
 """
 from pathlib import Path
@@ -7,7 +7,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 HERE = Path(__file__).resolve().parent
-df = pd.read_csv(HERE / "data" / "nifty50_monthly_2000_2026_partial.csv",
+df = pd.read_csv(HERE.parents[1] / "data" / "nifty50_monthly_2000_2026_partial.csv",
                  parse_dates=["month"], dtype={"year_complete": bool})
 df = df.sort_values("month")
 assert df["month"].is_unique, "Duplicate months"
