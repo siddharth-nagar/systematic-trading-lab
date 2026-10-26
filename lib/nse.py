@@ -7,7 +7,12 @@ NSE published two formats:
 
 The format is detected from each file's header, never from its date, and a file with
 unexpected columns raises an error instead of being guessed at. The UDiFF column names
-below follow NSE's UDiFF catalogue as used in public code; they are checked on every file.
+below follow NSE's UDiFF catalogue and were confirmed on a real file (2024-07-08 F&O); they are
+checked on every file.
+
+Units confirmed on that real file: F&O `TtlTradgVol` counts **contracts** (traded value / (volume x
+price) = lot size), the same as legacy `CONTRACTS`; `OpnIntrst` counts **units** (shares/index units),
+not contracts.
 """
 import io
 import zipfile
@@ -74,8 +79,9 @@ _FO_TYPE = {'IDF': 'FUTIDX', 'IDO': 'OPTIDX', 'STF': 'FUTSTK', 'STO': 'OPTSTK'}
 def parse_fo(df):
     """Normalise an F&O bhavcopy. Returns one row per contract with common column names.
 
-    value_inr is traded value in rupees in both formats. contracts is only in the legacy file;
-    volume_reported and lot_size only in UDiFF (see fo_volume_unit for what volume_reported counts).
+    value_inr is traded value in rupees in both formats. contracts is the number of contracts traded
+    in both formats (legacy CONTRACTS, UDiFF TtlTradgVol). volume_reported keeps the raw UDiFF volume
+    so fo_volume_unit can re-check that it still counts contracts; lot_size is UDiFF only.
     """
     if 'INSTRUMENT' in df.columns:
         _require(df, _FO_LEGACY, 'legacy F&O bhavcopy')
@@ -102,7 +108,7 @@ def parse_fo(df):
             'expiry': pd.to_datetime(df['XpryDt']),
             'open': df['OpnPric'], 'high': df['HghPric'], 'low': df['LwPric'], 'close': df['ClsPric'],
             'settle': df['SttlmPric'],
-            'contracts': np.nan,
+            'contracts': df['TtlTradgVol'].astype(float),
             'volume_reported': df['TtlTradgVol'].astype(float),
             'lot_size': df['NewBrdLotQty'].astype(float),
             'value_inr': df['TtlTrfVal'].astype(float),
@@ -142,7 +148,8 @@ def fo_volume_unit(daily):
     """Infer what UDiFF volume_reported counts, from value / (volume x price).
 
     Returns 'units' when the ratio is ~1 (shares/index units), 'contracts' when it is ~lot size,
-    or 'unknown'. Use it before comparing volume across the 2024-07-08 format change.
+    or 'unknown'. On the real 2024-07-08 file it is 'contracts' (ratio 24.98, lot 25); anything else
+    means NSE changed the file and `contracts` must not be trusted for UDiFF days.
     """
     u = daily[daily['format'] == 'udiff'].dropna(subset=['total_volume_reported', 'lot_size'])
     if u.empty:

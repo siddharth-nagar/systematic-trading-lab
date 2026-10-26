@@ -63,7 +63,8 @@ def main():
         fut.to_csv(OUT / 'nifty_futures_daily.csv', float_format='%.6f')
         unit = nse.fo_volume_unit(fut)
         say(f'NIFTY futures: {len(fut)} days, {fut.index[0]:%Y-%m-%d} to {fut.index[-1]:%Y-%m-%d}')
-        say(f'  UDiFF volume_reported counts: {unit}  (legacy files report contracts)')
+        flag = '' if unit in ('contracts', 'unknown') else '   <-- NOT CONTRACTS: total_contracts is wrong for UDiFF days'
+        say(f'  UDiFF volume_reported counts: {unit}  (legacy files report contracts){flag}')
         for col in ('total_open_interest', 'total_value_inr'):
             r = continuity(fut[col])
             flag = '' if np.isnan(r) or 0.5 < r < 2 else '   <-- LEVEL BREAK: check units before using'
