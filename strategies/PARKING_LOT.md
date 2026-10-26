@@ -4,7 +4,7 @@ Write ideas here instead of interrupting the current learning objective.
 
 ## Current learning objective
 
-Finish Kaufman sequentially. Chapters 8, 9, 10 and 11 have been completed, checked against the printed text and replicated at a basic level. Next: Chapter 12 (volume, open interest, breadth).
+Finish Kaufman sequentially. Chapters 8, 9, 10 and 11 have been completed, checked against the printed text and replicated at a basic level. Chapter 12 notes and synthetic lab are done; its NIFTY tests (Research 003) are pre-registered and wait for NSE data. Next: Chapter 13.
 
 The NIFTY seasonality study (`research/001-nifty-seasonality/`) is paused at the data-audit stage while reading. Resume it only after Chapter 12.
 

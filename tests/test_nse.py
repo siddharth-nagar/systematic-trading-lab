@@ -35,7 +35,7 @@ def fo_legacy(day='02-JAN-2024', oi=(1000.0, 500.0), close=(21800.0, 21950.0)):
         f'FUTSTK,INFY,25-Jan-2024,0,XX,1500,1510,1490,1505,1505,50,375,900,0,{day},\n')
 
 
-def fo_udiff(day='2024-07-08', oi=(1100.0, 450.0), close=(24300.0, 24400.0), lot=25, vol_is_units=True):
+def fo_udiff(day='2024-07-08', oi=(1100.0, 450.0), close=(24300.0, 24400.0), lot=25, vol_is_units=False):
     # Value is set so that value / (volume x price) reveals the unit of TtlTradgVol.
     rows = []
     for (expiry, c, o, contracts) in [('2024-07-25', close[0], oi[0], 80), ('2024-08-29', close[1], oi[1], 10)]:
@@ -182,5 +182,31 @@ def test_build_script_across_format_change(tmp_path, monkeypatch):
     assert breadth['advances'].tolist() == [2, 2]
     assert (tmp_path / 'niftybees_daily.csv').exists()
     report = (src / 'build_report.txt').read_text()
-    assert 'UDiFF volume_reported counts: units' in report
+    assert 'UDiFF volume_reported counts: contracts' in report
+    assert fut['total_contracts'].tolist() == [120, 90]        # one series across both formats
     assert 'total_open_interest: median after/before 2024-07-08 = 1.03' in report
+
+
+# --- Real NSE file: excerpt of BhavCopy_NSE_FO_0_0_0_20240708_F_0000.csv ------------------------
+# Header plus the three NIFTY futures rows, one NIFTY option and one stock future, unchanged.
+
+REAL_FO = ROOT / 'tests' / 'fixtures' / 'nse_fo_udiff_20240708_excerpt.csv'
+
+
+def test_real_udiff_file_parses_and_totals_match_hand_sums():
+    fo = nse.parse_fo(nse.read_bhavcopy(REAL_FO))
+    d = nse.index_futures_daily(fo, 'NIFTY').iloc[0]
+    assert d['front_expiry'] == pd.Timestamp('2024-07-25') and d['close'] == 24375.60
+    assert d['total_contracts'] == 130096 + 9396 + 2551
+    assert d['total_open_interest'] == 14239275 + 1357450 + 188450
+    assert d['lot_size'] == 25
+
+
+def test_real_udiff_volume_counts_contracts_and_oi_counts_units():
+    d = nse.index_futures_daily(nse.parse_fo(nse.read_bhavcopy(REAL_FO)), 'NIFTY')
+    assert nse.fo_volume_unit(d) == 'contracts'
+    raw = nse.read_bhavcopy(REAL_FO)
+    nifty = raw[(raw['FinInstrmTp'] == 'IDF') & (raw['TckrSymb'] == 'NIFTY')]
+    assert (nifty['OpnIntrst'] % nifty['NewBrdLotQty'] == 0).all()        # OI is in units (lot multiples)
+    assert (nifty['ChngInOpnIntrst'] % nifty['NewBrdLotQty'] == 0).all()
+

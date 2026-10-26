@@ -56,10 +56,15 @@ Daily overlap mismatch count: 2; largest absolute close-price difference 20.60 i
   - `nifty_futures_daily.csv`: front-month NIFTY futures OHLC and settle, plus **total** traded value, volume and open interest across all expiries (Kaufman pp. 528, 545–546: total, not single-contract, figures avoid roll distortions);
   - `nse_breadth_daily.csv`: EQ-series advances, declines, unchanged, up/down volume (shares) and 52-week new highs/lows (needs a year of history before the first count);
   - `niftybees_daily.csv`: NIFTYBEES ETF OHLC, volume and value — a cleaner equity volume series than the index itself.
-- **Open questions to check in `build_report.txt` on the first real run:**
-  - whether UDiFF `TtlTradgVol` counts contracts or units (detected automatically; legacy files count contracts);
-  - whether total open interest and traded value are continuous across 2024-07-08 (flagged if they jump by more than 2×);
-  - front-month basis against the NIFTY index (should stay well under 2%).
+- **Confirmed on a real file** (`BhavCopy_NSE_FO_0_0_0_20240708_F_0000.csv`, downloaded by the user on 2026-10-26; an excerpt is kept as `tests/fixtures/nse_fo_udiff_20240708_excerpt.csv`):
+  - the UDiFF F&O header matches `lib/nse.py` exactly (34 columns);
+  - `TtlTradgVol` counts **contracts** (value ÷ (volume × price) = 24.98 with lot size 25), the same unit as legacy `CONTRACTS`, so `total_contracts` is one series across both formats;
+  - `OpnIntrst` counts **units** (shares/index units), not contracts: every NIFTY value is a multiple of the lot size;
+  - NIFTY front-month close 24,375.60 vs index 24,320.55 (basis 0.23%); the file's underlying price equals the close in `nifty50_daily_2002_2026.csv` for that day.
+- **Still open, check in `build_report.txt` on the first full run:**
+  - whether legacy `OPEN_INT` is also in units (if it were in contracts, total OI would jump at 2024-07-08 and the report flags it);
+  - continuity of traded value across 2024-07-08;
+  - the CM (stock) bhavcopy format, not yet seen on a real file.
 - Legacy F&O contract counts change meaning when the lot size changes (NIFTY lots have been 200, 50, 75 and 25 at different times). Use traded **value** or OI × price for long-run comparisons.
 - Breadth counts every EQ-series security, including ETFs; NSE's published advance/decline figures may differ slightly.
-- Status: written and unit-tested on hand-made sample files; **not yet run on real NSE data** (the cloud environment blocks nseindia.com).
+- Status: unit-tested on hand-made samples and checked on one real UDiFF F&O file; the full download has not been run yet (the cloud environment blocks nseindia.com).

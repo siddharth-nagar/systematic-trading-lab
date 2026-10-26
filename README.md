@@ -18,13 +18,14 @@ Standing rules (for you and for Claude) are in [CLAUDE.md](CLAUDE.md).
 | 9 — Momentum and oscillators | [notes](notes/ch09-momentum-oscillators.md) | [ch09_lab.ipynb](labs/ch09_lab.ipynb) (synthetic) | yes, pp. 369–426 |
 | 10 — Seasonality and calendar patterns | [notes](notes/ch10-seasonality.md) | [Research 001](research/001-nifty-seasonality/README.md), [ch10_seasonal_index.py](labs/ch10_seasonal_index.py) | yes, pp. 427–484 |
 | 11 — Cycle analysis | [notes](notes/ch11-cycle-analysis.md) | [ch11_lab.ipynb](labs/ch11_lab.ipynb) (synthetic), [ch11_extras.ipynb](labs/ch11_extras.ipynb), [Research 002](research/002-nifty-cycle-tools/README.md) | yes, pp. 485–526 |
-| 12 — Volume, open interest, breadth | next | data pipeline ready: `data/fetch_nse.py` → `data/build_nse_daily.py` (not yet run on real data) | — |
+| 12 — Volume, open interest, breadth | [notes](notes/ch12-volume-oi-breadth.md) | [ch12_lab.ipynb](labs/ch12_lab.ipynb) (synthetic); [Research 003](research/003-nifty-volume-breadth/README.md) pre-registered, waiting for NSE data | yes, pp. 527–564 |
 
 ## Research findings so far
 
 - **Research 001 — NIFTY seasonality:** no evidence that calendar-month means differ (omnibus permutation p ≈ 0.575, 2000–2025, provisional secondary data).
 - **Ch.8 lab — trend systems on NIFTY:** Kaufman's fat tail holds (long runs and a few big trades drive profits); long-only 40-day MA trend filter Sharpe 0.96 vs 0.76 buy & hold with a much smaller drawdown; on NIFTY, price-cross signals and same-day-close entries beat Kaufman's preferred trendline signals and delayed entries.
 - **Research 002 — Ch.11 cycle tools on NIFTY:** no cycle tool beat buy & hold with next-open fills and costs; trend filters survived (a plain 50-day MA filter was best); look-ahead versions showed fake Sharpe ratios of 2.9–3.3.
+- **Ch.12 lab (synthetic):** OBV tracks price even when volume is pure noise (20-day change correlation 0.69), so volume indicators must beat their price-only versions to count; a 2σ low-volume filter removes ~2.3% of days, not the book's 32%; a narrow cap-weighted rally shows up as falling breadth.
 - **Ch.11 extras:** the book's copper cycle (8.4 quarters) does not reproduce from its own table (~10 quarters); smoothing a random walk creates convincing fake cycles; NIFTY monthly returns show no cycle (p ≈ 0.80).
 
 Every test run is logged in [`experiments/log.csv`](experiments/log.csv) (one row per run) and [`experiments/log.md`](experiments/log.md) (narrative).
@@ -59,10 +60,12 @@ systematic-trading-lab/
 │   ├── signals.py          # crossovers, entry/exit → position
 │   ├── backtest.py         # the one backtest engine (close / next-open / next-close fills)
 │   ├── nse.py              # NSE bhavcopy parsers (legacy + UDiFF), futures totals, breadth
+│   ├── volume.py           # Ch 12 volume and breadth indicators (OBV, A/D, MFI, PVI/NVI, McClellan, TRIN, ...)
 │   └── metrics.py          # CAGR, Sharpe, max DD, MAR, profit factor, win rate
 ├── research/
 │   ├── 001-nifty-seasonality/
-│   └── 002-nifty-cycle-tools/
+│   ├── 002-nifty-cycle-tools/
+│   └── 003-nifty-volume-breadth/   # pre-registered, waiting for data
 ├── strategies/
 │   ├── _template/          # HYPOTHESIS.md, config.yaml, strategy.py, RESULTS.md
 │   └── PARKING_LOT.md
